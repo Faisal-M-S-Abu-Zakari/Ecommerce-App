@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import ShopContext from "../context/ShopContext";
 import { assets } from "../assets/assets";
 import Title from "../components/Title";
@@ -7,6 +7,63 @@ import ProductItem from "../components/ProductItem";
 const Collection = () => {
   const { products } = useContext(ShopContext);
   const [showFilter, setShowFilter] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
+  const [sortBy, setSortBy] = useState("relevant");
+
+  const toggleCategory = (event) => {
+    // هل هذا الـ category مختار أصلًا؟
+    // ✅ نعم → احذفه
+    // ❌ لا → أضفه
+    if (categories.includes(event.target.value)) {
+      // هان راح يرجع مصفوفة جديدة بحيث يحذف الصنف يلي ضغط عليه
+      setCategories((prev) =>
+        prev.filter((item) => item !== event.target.value),
+      );
+    } else {
+      // هان بحافظ على المصفوفة القديمة و بضيف الصنف يلي ضغط عليه المستخدم
+      setCategories((prev) => [...prev, event.target.value]);
+    }
+  };
+  const toggleSubCategory = (event) => {
+    if (subCategories.includes(event.target.value)) {
+      setSubCategories((prev) =>
+        prev.filter((item) => item !== event.target.value),
+      );
+    } else {
+      setSubCategories((prev) => [...prev, event.target.value]);
+    }
+  };
+
+  const filteredProducts = useMemo(() => {
+    // لان فنكشن السورت بتعدل على المصفوفة الاصلية لازم اعمل نسخة
+    let result = [...products];
+
+    // category filter
+    if (categories.length > 0) {
+      // هان بحكيله لف على كل المنتجات و خلي فقط المنتج يلي صنفه موجود في مصفوفة الاصناف
+      result = result.filter((p) => categories.includes(p.category));
+    }
+
+    // subCategory filter
+    if (subCategories.length > 0) {
+      // هان راح يمسك نتيجة الفلترة السابقة و برضو يرجع المنتجات يلي النوع تبعهم تم اختياره
+      result = result.filter((p) => subCategories.includes(p.subCategory));
+    }
+
+    //  SORT LOGIC
+    if (sortBy === "low-high") {
+      // بيمسك اول منتجين وبيطرح سعرهم من بعض , اذا الناتج قيمة سالبة , يعني المنتج الاول هو ارخص فبيظل بالبداية
+      result.sort((a, b) => a.price - b.price);
+    }
+
+    if (sortBy === "high-low") {
+      result.sort((a, b) => b.price - a.price);
+    }
+
+    return result;
+  }, [products, categories, subCategories, sortBy]);
+
   return (
     <div className="flex sm:flex-row flex-col gap-1 sm-gap-10 pt-10 border-t">
       {/* Filter Options */}
@@ -29,13 +86,31 @@ const Collection = () => {
           <p className="mb-3 font-medium text-sm">CATEGORIES</p>
           <div className="flex flex-col gap-2 font-light text-gray-700 text-sm">
             <p className="flex gap-2">
-              <input type="checkbox" className="w-3" value={"Men"} /> Men
+              <input
+                type="checkbox"
+                className="w-3"
+                value={"Men"}
+                onChange={toggleCategory}
+              />{" "}
+              Men
             </p>
             <p className="flex gap-2">
-              <input type="checkbox" className="w-3" value={"Women"} /> Women
+              <input
+                type="checkbox"
+                className="w-3"
+                value={"Women"}
+                onChange={toggleCategory}
+              />{" "}
+              Women
             </p>
             <p className="flex gap-2">
-              <input type="checkbox" className="w-3" value={"Kids"} /> Kids
+              <input
+                type="checkbox"
+                className="w-3"
+                value={"Kids"}
+                onChange={toggleCategory}
+              />{" "}
+              Kids
             </p>
           </div>
         </div>
@@ -46,15 +121,30 @@ const Collection = () => {
           <p className="mb-3 font-medium text-sm">Type</p>
           <div className="flex flex-col gap-2 font-light text-gray-700 text-sm">
             <p className="flex gap-2">
-              <input type="checkbox" className="w-3" value={"Topwear"} />{" "}
+              <input
+                onChange={toggleSubCategory}
+                type="checkbox"
+                className="w-3"
+                value={"Topwear"}
+              />{" "}
               Topwear
             </p>
             <p className="flex gap-2">
-              <input type="checkbox" className="w-3" value={"Bottomwear"} />{" "}
+              <input
+                onChange={toggleSubCategory}
+                type="checkbox"
+                className="w-3"
+                value={"Bottomwear"}
+              />{" "}
               Bottomwear
             </p>
             <p className="flex gap-2">
-              <input type="checkbox" className="w-3" value={"Winterwear"} />{" "}
+              <input
+                onChange={toggleSubCategory}
+                type="checkbox"
+                className="w-3"
+                value={"Winterwear"}
+              />{" "}
               Winterwear
             </p>
           </div>
@@ -66,8 +156,8 @@ const Collection = () => {
           <Title text1={"ALL"} text2={"COLLECTION"} />
           {/* product sort */}
           <select
-            name=""
-            id=""
+            onChange={(e) => setSortBy(e.target.value)}
+            value={sortBy}
             className="px-2 border-2 border-gray-300 text-sm"
           >
             <option value="relevant">Sort By: Relevant</option>
@@ -77,7 +167,7 @@ const Collection = () => {
         </div>
         {/* Map Products  */}
         <div className="gap-4 gap-y-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {products.map((item, index) => (
+          {filteredProducts.map((item, index) => (
             <ProductItem
               key={index}
               id={item._id}
