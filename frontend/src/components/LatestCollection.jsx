@@ -5,11 +5,20 @@ import ProductItem from "./ProductItem";
 
 const LatestCollection = () => {
   const { products } = useContext(ShopContext);
-  const [latestProducts, setLatestProducts] = useState([]);
 
-  useEffect(() => {
-    setLatestProducts(products.slice(0, 10));
-  }, []);
+  // const [latestProducts, setLatestProducts] = useState([]);
+
+  // useEffect(() => {
+  //   setLatestProducts(products.slice(0, 10));
+  // }, []);
+
+  // const [latestProducts, setLatestProducts] = useState([]);
+
+  // useEffect(() => {
+  //   setLatestProducts(products.slice(0, 10));
+  // }, []);
+
+  const latestProducts = products.slice(0, 10);
 
   return (
     <div className="my-10">
@@ -20,18 +29,19 @@ const LatestCollection = () => {
         </p>
       </div>
       {/* Rendering Products  */}
-      <div
-        className="gap-4 gap-y-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
-      >
-        {latestProducts.map((product, index) => (
-          <ProductItem
-            key={index}
-            id={product._id}
-            name={product.name}
-            image={product.image}
-            price={product.price}
-          />
-        ))}
+
+      <div className="gap-4 gap-y-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+        <div className="gap-4 gap-y-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+          {latestProducts.map((product, index) => (
+            <ProductItem
+              key={index}
+              id={product._id}
+              name={product.name}
+              image={product.image}
+              price={product.price}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
