@@ -5,7 +5,7 @@ import Title from "../components/Title";
 import ProductItem from "../components/ProductItem";
 
 const Collection = () => {
-  const { products } = useContext(ShopContext);
+  const { products, search } = useContext(ShopContext);
   const [showFilter, setShowFilter] = useState(false);
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
@@ -39,6 +39,11 @@ const Collection = () => {
     // لان فنكشن السورت بتعدل على المصفوفة الاصلية لازم اعمل نسخة
     let result = [...products];
 
+    if (search.trim() !== "") {
+      result = result.filter((p) =>
+        p.name.toLowerCase().includes(search.toLowerCase()),
+      );
+    }
     // category filter
     if (categories.length > 0) {
       // هان بحكيله لف على كل المنتجات و خلي فقط المنتج يلي صنفه موجود في مصفوفة الاصناف
@@ -62,7 +67,7 @@ const Collection = () => {
     }
 
     return result;
-  }, [products, categories, subCategories, sortBy]);
+  }, [products, categories, subCategories, sortBy, search]);
 
   return (
     <div className="flex sm:flex-row flex-col gap-1 sm-gap-10 pt-10 border-t">
