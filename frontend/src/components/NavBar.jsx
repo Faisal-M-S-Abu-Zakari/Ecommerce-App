@@ -4,7 +4,7 @@ import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import ShopContext from "../context/ShopContext";
 const NavBar = () => {
   const [visible, setVisible] = useState(false);
-  const { setShowSearch } = useContext(ShopContext);
+  const { setShowSearch, CartCount } = useContext(ShopContext);
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -64,8 +64,8 @@ const NavBar = () => {
             className="w-5 min-w-5 cursor-pointer"
             alt=""
           />
-          <p className="right-[-5px] bottom-[-5px] absolute bg-black rounded-full w-4 aspect-square text-[8px] text-white text-center leading-4">
-            0
+          <p className="-right-1.25 -bottom-1.25 absolute bg-black rounded-full w-4 aspect-square text-[8px] text-white text-center leading-4">
+            {CartCount}
           </p>
         </Link>
         <img

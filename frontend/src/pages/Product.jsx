@@ -6,8 +6,8 @@ import RelatedProducts from "../components/RelatedProducts";
 
 const Product = () => {
   const { productId } = useParams();
-  const { products, currency } = useContext(ShopContext);
-  const [selectedSize, setSelectedSize] = useState(null);
+  const { products, currency, addToCart } = useContext(ShopContext);
+  const [selectedSize, setSelectedSize] = useState("");
   // المنتج مشتق مباشرة → لا state ولا effect
   const productData = useMemo(() => {
     return products.find((item) => item._id === productId);
@@ -81,7 +81,10 @@ const Product = () => {
               })}
             </div>
           </div>
-          <button className="bg-black active:bg-gray-700 px-8 py-3 text-white text-sm cursor-pointer">
+          <button
+            onClick={() => addToCart(productData._id, selectedSize)}
+            className="bg-black active:bg-gray-700 px-8 py-3 text-white text-sm cursor-pointer"
+          >
             ADD TO CART
           </button>
           <hr className="mt-8 sm:w-4/5" />
