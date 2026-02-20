@@ -3,12 +3,14 @@ import cors from "cors";
 import "dotenv/config"; // this import will five me the support to use the .env file
 
 import connectDB from "./config/mongoDB.js";
+import connectCloudinary from "./config/cloudinary.js";
 
 // App Config
 
 const app = express();
 const port = process.env.PORT || 4000;
 connectDB();
+connectCloudinary();
 
 // Middlewares
 app.use(express.json()); // this middleware will allow us to parse the incoming request body as JSON
