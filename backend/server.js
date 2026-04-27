@@ -26,6 +26,21 @@ app.get("/", (req, res) => {
   res.send("API Working");
 });
 
+app.get("/api/health", async (req, res) => {
+  try {
+    const mongoose = (await import("mongoose")).default;
+    const state = mongoose.connection.readyState;
+    const dbState = state === 1 ? "Connected" : "Disconnected";
+    res.json({ 
+      status: "ok", 
+      database: dbState,
+      message: dbState === "Connected" ? "Data coming from MongoDB" : "Using fallback data"
+    });
+  } catch (error) {
+    res.json({ status: "error", message: error.message });
+  }
+});
+
 app.listen(port, () => {
   console.log(`listening on localhost:${port}`);
 });
