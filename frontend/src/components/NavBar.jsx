@@ -16,7 +16,7 @@ const NavBar = () => {
     setShowSearch(true);
   };
 
-  return (
+return (
     <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
@@ -70,24 +70,7 @@ const NavBar = () => {
                 </span>
               )}
             </Link>
-            
-            <button onClick={() => setVisible(true)} className="p-2 text-gray-400 hover:text-black sm:hidden">
-              <img src={assets.menu_icon} className="w-5 h-5" alt="" />
-            </button>
           </div>
-        </div>
-      </div>
-
-      <div className={`fixed inset-0 z-40 bg-white transform transition-transform duration-300 ${visible ? 'translate-x-0' : 'translate-x-full'}`}>
-        <div className="flex flex-col h-full pt-16 px-6">
-          <button onClick={() => setVisible(false)} className="absolute top-4 right-4 p-2">
-            <img src={assets.cross_icon} className="w-6 h-6" alt="" />
-          </button>
-          
-          <NavLink onClick={() => setVisible(false)} to="/" className="py-4 text-lg font-medium border-b border-gray-100">Home</NavLink>
-          <NavLink onClick={() => setVisible(false)} to="/collection" className="py-4 text-lg font-medium border-b border-gray-100">Collection</NavLink>
-          <NavLink onClick={() => setVisible(false)} to="/about" className="py-4 text-lg font-medium border-b border-gray-100">About</NavLink>
-          <NavLink onClick={() => setVisible(false)} to="/contact" className="py-4 text-lg font-medium border-b border-gray-100">Contact</NavLink>
         </div>
       </div>
     </nav>

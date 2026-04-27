@@ -1,18 +1,31 @@
 import express from "express";
 import cors from "cors";
-import "dotenv/config"; // this import will five me the support to use the .env file
+import "dotenv/config";
 
 import connectDB from "./config/mongoDB.js";
 import connectCloudinary from "./config/cloudinary.js";
 import userRouter from "./routes/userRoute.js";
 import productRouter from "./routes/productRoute.js";
 import orderRouter from "./routes/orderRoute.js";
-
-// App Config
+import userModel from "./models/userModel.js";
+import productModel from "./models/productModel.js";
+import orderModel from "./models/orderModel.js";
 
 const app = express();
 const port = process.env.PORT || 4000;
-connectDB();
+
+const initCollections = async () => {
+  try {
+    await userModel.createCollection();
+    await productModel.createCollection();
+    await orderModel.createCollection();
+    console.log("Collections created in MongoDB Atlas");
+  } catch (error) {
+    console.log("Collections may already exist:", error.message);
+  }
+};
+
+connectDB().then(() => initCollections());
 connectCloudinary();
 
 // Middlewares
