@@ -40,7 +40,7 @@ const Add = ({ token }) => {
       const responcse = await axios.post(
         backendUrl + "/api/product/add",
         formData,
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
 
       if (responcse.data.success) {
@@ -137,7 +137,7 @@ const Add = ({ token }) => {
           <input
             onChange={(e) => setName(e.target.value)}
             value={name}
-            className="px-3 py-2 w-full max-w-[500px]"
+            className="px-3 py-2 w-full max-w-125"
             type="text"
             placeholder="Type here"
             required
@@ -148,7 +148,7 @@ const Add = ({ token }) => {
           <textarea
             onChange={(e) => setDescription(e.target.value)}
             value={description}
-            className="px-3 py-2 w-full max-w-[500px]"
+            className="px-3 py-2 w-full max-w-125"
             type="text"
             placeholder="Write content here"
             required
@@ -184,7 +184,7 @@ const Add = ({ token }) => {
             <input
               onChange={(e) => setPrice(e.target.value)}
               value={price}
-              className="px-3 py-2 w-full sm:w-[120px]"
+              className="px-3 py-2 w-full sm:w-30"
               type="number"
               placeholder="25"
             />
@@ -198,7 +198,7 @@ const Add = ({ token }) => {
                 setSizes((prev) =>
                   prev.includes("S")
                     ? prev.filter((item) => item !== "S")
-                    : [...prev, "S"]
+                    : [...prev, "S"],
                 )
               }
             >
@@ -215,7 +215,7 @@ const Add = ({ token }) => {
                 setSizes((prev) =>
                   prev.includes("M")
                     ? prev.filter((item) => item !== "M")
-                    : [...prev, "M"]
+                    : [...prev, "M"],
                 )
               }
             >
@@ -232,7 +232,7 @@ const Add = ({ token }) => {
                 setSizes((prev) =>
                   prev.includes("L")
                     ? prev.filter((item) => item !== "L")
-                    : [...prev, "L"]
+                    : [...prev, "L"],
                 )
               }
             >
@@ -249,7 +249,7 @@ const Add = ({ token }) => {
                 setSizes((prev) =>
                   prev.includes("XL")
                     ? prev.filter((item) => item !== "XL")
-                    : [...prev, "XL"]
+                    : [...prev, "XL"],
                 )
               }
             >
@@ -266,7 +266,7 @@ const Add = ({ token }) => {
                 setSizes((prev) =>
                   prev.includes("XXL")
                     ? prev.filter((item) => item !== "XXL")
-                    : [...prev, "XXL"]
+                    : [...prev, "XXL"],
                 )
               }
             >
