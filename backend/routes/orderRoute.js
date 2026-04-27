@@ -6,6 +6,7 @@ const orderRouter = express.Router();
 
 orderRouter.post("/place", authMiddleware, placeOrder);
 orderRouter.post("/userorders", authMiddleware, getUserOrders);
+orderRouter.get("/list", adminMiddleware, getAllOrders);
 orderRouter.get("/allorders", adminMiddleware, getAllOrders);
 orderRouter.post("/status", adminMiddleware, updateOrderStatus);
 
