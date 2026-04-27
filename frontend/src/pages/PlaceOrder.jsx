@@ -6,7 +6,18 @@ import ShopContext from "../context/ShopContext";
 
 const PlaceOrder = () => {
   const [method, setMethod] = useState("cod");
-  const { navigate, token } = useContext(ShopContext);
+  const [address, setAddress] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    street: "",
+    city: "",
+    state: "",
+    zipcode: "",
+    country: "",
+    phone: "",
+  });
+  const { navigate, token, placeOrder, cartProducts } = useContext(ShopContext);
 
   useEffect(() => {
     if (!token) {
@@ -16,8 +27,24 @@ const PlaceOrder = () => {
 
   if (!token) return null;
 
+  const handleInput = (e) => {
+    setAddress({ ...address, [e.target.name]: e.target.value });
+  };
+
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+    if (cartProducts.length === 0) {
+      navigate("/collection");
+      return;
+    }
+    const result = await placeOrder(address, method);
+    if (result.success) {
+      navigate("/orders");
+    }
+  };
+
   return (
-    <form className="flex sm:flex-row flex-col justify-between gap-4 pt-5 sm:pt-14 border-t min-h-[80vh]">
+    <form onSubmit={onSubmitHandler} className="flex sm:flex-row flex-col justify-between gap-4 pt-5 sm:pt-14 border-t min-h-[80vh]">
       {/* ------- Left Side ----- */}
       <div className="flex flex-col gap-4 w-full sm:max-w-120">
         <div className="my-3 text-xl sm:text-2xl">
@@ -138,7 +165,6 @@ const PlaceOrder = () => {
             <button
               type="submit"
               className="bg-black px-16 py-3 text-white text-sm cursor-pointer"
-              onClick={() => navigate("/orders")}
             >
               PLACE ORDER
             </button>

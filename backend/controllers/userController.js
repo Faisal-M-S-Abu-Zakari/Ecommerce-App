@@ -14,29 +14,29 @@ const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      return res.status(400).json({ message: "Please fill all the fields" });
+      return res.json({ success: false, message: "Please fill all the fields" });
     }
     if (!validator.isEmail(email)) {
-      return res.status(400).json({ message: "Invalid email format" });
+      return res.json({ success: false, message: "Invalid email format" });
     }
     if (password.length < 8) {
-      return res.status(400).json({ message: "Enter a strong password" });
+      return res.json({ success: false, message: "Enter a strong password" });
     }
     const existingUser = await userModel.findOne({ email });
     if (!existingUser) {
-      res.status(400).json({ message: "User not found" });
+      return res.json({ success: false, message: "User not found" });
     }
     const isPasswordCorrect = await bcrypt.compare(
       password,
       existingUser.password,
     );
     if (!isPasswordCorrect) {
-      res.status(400).json({ message: "Invalid password" });
+      return res.json({ success: false, message: "Invalid password" });
     }
     const token = generateAuthToken(existingUser._id);
-    res.status(200).json({ message: "User loggedIn Successfully", token });
+    res.json({ success: true, message: "User loggedIn Successfully", token, user: { name: existingUser.name, email: existingUser.email } });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.json({ success: false, message: error.message });
   }
 };
 
@@ -110,4 +110,26 @@ const loginAdmin = async (req, res) => {
   }
 };
 
-export { loginUser, registerUser, loginAdmin };
+// Route for getting user cart
+const getCart = async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const user = await userModel.findById(userId);
+    res.json({ success: true, cartData: user.cartData || {} });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// Route for updating user cart
+const updateCart = async (req, res) => {
+  try {
+    const { userId, cartData } = req.body;
+    await userModel.findByIdAndUpdate(userId, { cartData });
+    res.json({ success: true, message: "Cart updated" });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+export { loginUser, registerUser, loginAdmin, getCart, updateCart };
