@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Faisal Admin",
+    "email": "faisal@admin.com",
+    "password": "$2a$10$Xv4Z8Y5Z6Z7Z8Z9Z0Z1ZuO5Z6Z7Z8Z9Z0Z1ZuO5Z6Z7Z8Z9Z0Z1Zu",
+    "cartData": {},
+    "avatar": "",
+    "isAdmin": true
+  },
+  {
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "$2a$10$Xv4Z8Y5Z6Z7Z8Z9Z0Z1ZuO5Z6Z7Z8Z9Z0Z1ZuO5Z6Z7Z8Z9Z0Z1Zu",
+    "cartData": {},
+    "avatar": "",
+    "isAdmin": false
+  },
+  {
+    "name": "Jane Smith",
+    "email": "jane@example.com",
+    "password": "$2a$10$Xv4Z8Y5Z6Z7Z8Z9Z0Z1ZuO5Z6Z7Z8Z9Z0Z1ZuO5Z6Z7Z8Z9Z0Z1Zu",
+    "cartData": {},
+    "avatar": "",
+    "isAdmin": false
+  }
+]

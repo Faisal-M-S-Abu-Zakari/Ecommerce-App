@@ -63,7 +63,11 @@ const ShopContextProvider = ({ children }) => {
       });
       const data = await response.json();
       if (data.success && data.cartData) {
-        setCartProducts(data.cartData);
+        // Ensure cartData is always an array
+        const cartArray = Array.isArray(data.cartData) 
+          ? data.cartData 
+          : Object.values(data.cartData || {});
+        setCartProducts(cartArray);
       }
     } catch (error) {
       console.error("Failed to load cart:", error);
@@ -175,19 +179,22 @@ const ShopContextProvider = ({ children }) => {
     // So , here if i add {productId: 1, size: 'M'} and then i add {productId: 1, size: 'L'} , the second one will be added to the cart as new product
 
     setCartProducts((prev) => {
-      const existingItem = prev.find(
-        (item) => item.productId === productId && item.size === size,
+      // Ensure prev is always an array
+      const cart = Array.isArray(prev) ? prev : [];
+      
+      const existingItem = cart.find(
+        (item) => item?.productId === productId && item?.size === size,
       );
 
       let newCart;
       if (existingItem) {
-        newCart = prev.map((item) =>
-          item.productId === productId && item.size === size
-            ? { ...item, quantity: item.quantity + 1 }
+        newCart = cart.map((item) =>
+          item?.productId === productId && item?.size === size
+            ? { ...item, quantity: (item?.quantity || 0) + 1 }
             : item,
         );
       } else {
-        newCart = [...prev, { productId, size, quantity: 1 }];
+        newCart = [...cart, { productId, size, quantity: 1 }];
       }
       
       if (token) {
@@ -280,13 +287,15 @@ const ShopContextProvider = ({ children }) => {
     }
   };
   const CartCount = useMemo(() => {
-    return cartProducts.reduce((total, item) => total + item.quantity, 0);
+    if (!Array.isArray(cartProducts)) return 0;
+    return cartProducts.reduce((total, item) => total + (item?.quantity || 0), 0);
   }, [cartProducts]);
 
   const cartTotal = useMemo(() => {
+    if (!Array.isArray(cartProducts)) return 0;
     return cartProducts.reduce((total, item) => {
-      const product = productMap[item.productId];
-      return product ? total + product.price * item.quantity : total;
+      const product = productMap[item?.productId];
+      return product ? total + product.price * (item?.quantity || 0) : total;
     }, 0);
   }, [cartProducts, productMap]);
 
