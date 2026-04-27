@@ -1,22 +1,47 @@
 import ShopContext from "../context/ShopContext";
-import { products } from "../assets/assets";
-import { useMemo, useState } from "react";
+import { products as staticProducts } from "../assets/assets";
+import { useMemo, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
+
 const ShopContextProvider = ({ children }) => {
   const currency = "$";
   const delivery_fee = 10;
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const [cartProducts, setCartProducts] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // map for faster lookup
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch(`${API_URL}/api/product/list`);
+      const data = await response.json();
+      if (data.success && data.products.length > 0) {
+        setProducts(data.products);
+      } else {
+        setProducts(staticProducts);
+      }
+    } catch (error) {
+      console.error("Failed to fetch products:", error);
+      setProducts(staticProducts);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
   const productMap = useMemo(() => {
     const map = {};
     products.forEach((p) => (map[p._id] = p));
     return map;
-  }, []);
+  }, [products]);
 
   const addToCart = (productId, size) => {
     // if the user doesn't select a size then show an error message
@@ -80,6 +105,7 @@ const ShopContextProvider = ({ children }) => {
 
   const value = {
     products,
+    loading,
     currency,
     delivery_fee,
     search,
@@ -93,6 +119,7 @@ const ShopContextProvider = ({ children }) => {
     updateQuantity,
     cartTotal,
     navigate,
+    API_URL,
   };
 
   return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>;

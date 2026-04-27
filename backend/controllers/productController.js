@@ -70,12 +70,41 @@ const addProduct = async (req, res) => {
 };
 
 // function for getting all products :
-const listProducts = async (req, res) => {};
+const listProducts = async (req, res) => {
+  try {
+    const products = await productModel.find({});
+    res.json({ success: true, products });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
 
 // function for getting a single product by id :
-const singleProduct = async (req, res) => {};
+const singleProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await productModel.findById(id);
+    if (!product) {
+      return res.json({ success: false, message: "Product not found" });
+    }
+    res.json({ success: true, product });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
 
 // function for remove product by id :
-const removeProduct = async (req, res) => {};
+const removeProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await productModel.findByIdAndDelete(id);
+    res.json({ success: true, message: "Product removed" });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
 
 export { addProduct, listProducts, singleProduct, removeProduct };
