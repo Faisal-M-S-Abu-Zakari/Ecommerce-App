@@ -19,8 +19,12 @@ const Product = () => {
     return <div className="opacity-0"></div>;
   }
 
-  if (!image) {
-    setImage(productData.image[0]);
+  if (!image && productData.images?.length > 0) {
+    setImage(productData.images[0]);
+  }
+
+  if (!productData.images || productData.images.length === 0) {
+    return <div className="opacity-0"></div>;
   }
 
   return (
@@ -30,7 +34,7 @@ const Product = () => {
         <div className="flex sm:flex-row flex-col flex-1 gap-3">
           {/* Thumbnails */}
           <div className="flex sm:flex-col gap-3 w-full sm:w-[18.7%] overflow-x-auto sm:overflow-y-scroll">
-            {productData.image.map((item, index) => (
+            {productData.images?.map((item, index) => (
               <img
                 key={index}
                 src={item}

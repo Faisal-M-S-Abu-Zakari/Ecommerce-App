@@ -1,5 +1,4 @@
 import ShopContext from "../context/ShopContext";
-import { products as staticProducts } from "../assets/assets";
 import { useMemo, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -142,14 +141,11 @@ const ShopContextProvider = ({ children }) => {
     try {
       const response = await fetch(`${API_URL}/api/product/list`);
       const data = await response.json();
-      if (data.success && data.products.length > 0) {
-        setProducts(data.products);
-      } else {
-        setProducts(staticProducts);
+      if (data.success) {
+        setProducts(data.products || []);
       }
     } catch (error) {
       console.error("Failed to fetch products:", error);
-      setProducts(staticProducts);
     } finally {
       setLoading(false);
     }
