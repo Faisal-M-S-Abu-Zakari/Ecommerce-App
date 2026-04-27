@@ -8,10 +8,12 @@ import { toast } from "react-toastify";
 const Edit = ({ token }) => {
   const { id } = useParams();
 
-  const [image1, setImage1] = useState(false);
-  const [image2, setImage2] = useState(false);
-  const [image3, setImage3] = useState(false);
-  const [image4, setImage4] = useState(false);
+  const [image1, setImage1] = useState(null);
+  const [image2, setImage2] = useState(null);
+  const [image3, setImage3] = useState(null);
+  const [image4, setImage4] = useState(null);
+  
+  const [existingImages, setExistingImages] = useState([]);
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -27,17 +29,18 @@ const Edit = ({ token }) => {
     const fetchProduct = async () => {
       try {
         const response = await axios.post(backendUrl + "/api/product/single", {
-          productId: id,
+          id: id,
         });
         if (response.data.success) {
           const product = response.data.product;
-          setName(product.name);
-          setDescription(product.description);
-          setPrice(product.price);
-          setCategory(product.category);
-          setSubCategory(product.subCategory);
-          setBestseller(product.bestseller);
+          setName(product.name || "");
+          setDescription(product.description || "");
+          setPrice(product.price || "");
+          setCategory(product.category || "Men");
+          setSubCategory(product.subCategory || "Topwear");
+          setBestseller(product.bestseller || false);
           setSizes(product.sizes || []);
+          setExistingImages(product.images || []);
         } else {
           toast.error("Failed to load product");
         }
@@ -74,7 +77,7 @@ const Edit = ({ token }) => {
       const response = await axios.put(
         backendUrl + "/api/product/update",
         formData,
-        { headers: { token } }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       if (response.data.success) {
@@ -105,46 +108,39 @@ const Edit = ({ token }) => {
         onSubmit={onSubmitHandler}
         className="flex flex-col items-start gap-3 w-full"
       >
-        <p className="mb-2">Upload Image (leave blank to keep existing)</p>
+        <p className="mb-2">Product Images (click to change)</p>
 
-        <div className="flex gap-2">
-          <label htmlFor="image1">
-            <img className="w-20" src={assets.upload_area} alt="" />
-            <input
-              onChange={(e) => setImage1(e.target.files[0])}
-              type="file"
-              id="image1"
-              hidden
-            />
-          </label>
-          <label htmlFor="image2">
-            <img className="w-20" src={assets.upload_area} alt="" />
-            <input
-              onChange={(e) => setImage2(e.target.files[0])}
-              type="file"
-              id="image2"
-              hidden
-            />
-          </label>
-          <label htmlFor="image3">
-            <img className="w-20" src={assets.upload_area} alt="" />
-            <input
-              onChange={(e) => setImage3(e.target.files[0])}
-              type="file"
-              id="image3"
-              hidden
-            />
-          </label>
-          <label htmlFor="image4">
-            <img className="w-20" src={assets.upload_area} alt="" />
-            <input
-              onChange={(e) => setImage4(e.target.files[0])}
-              type="file"
-              id="image4"
-              hidden
-            />
-          </label>
+        <div className="flex gap-2 flex-wrap">
+          {[0, 1, 2, 3].map((index) => {
+            const existingImage = existingImages[index];
+            const newImage = [image1, image2, image3, image4][index];
+            const displayImage = newImage ? URL.createObjectURL(newImage) : (existingImage || assets.upload_area);
+            
+            return (
+              <label key={index} htmlFor={`image${index + 1}`}>
+                <img 
+                  className="w-20 h-20 object-cover border border-gray-300" 
+                  src={displayImage} 
+                  alt={`Image ${index + 1}`} 
+                />
+                <input
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (index === 0) setImage1(file);
+                    if (index === 1) setImage2(file);
+                    if (index === 2) setImage3(file);
+                    if (index === 3) setImage4(file);
+                  }}
+                  type="file"
+                  id={`image${index + 1}`}
+                  hidden
+                  accept="image/*"
+                />
+              </label>
+            );
+          })}
         </div>
+        <p className="text-xs text-gray-500 mt-1">Click image to change. Leave as is to keep existing.</p>
         <div className="w-full">
           <p className="mb-2">Product name</p>
           <input

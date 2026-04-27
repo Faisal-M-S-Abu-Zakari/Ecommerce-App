@@ -83,8 +83,12 @@ const listProducts = async (req, res) => {
 // function for getting a single product by id :
 const singleProduct = async (req, res) => {
   try {
-    const { id } = req.params;
-    const product = await productModel.findById(id);
+    // Support both params (/:id) and body ({ id })
+    const productId = req.params.id || req.body.id;
+    if (!productId) {
+      return res.json({ success: false, message: "Product ID required" });
+    }
+    const product = await productModel.findById(productId);
     if (!product) {
       return res.json({ success: false, message: "Product not found" });
     }
@@ -107,4 +111,59 @@ const removeProduct = async (req, res) => {
   }
 };
 
-export { addProduct, listProducts, singleProduct, removeProduct };
+// function for updating product
+const updateProduct = async (req, res) => {
+  try {
+    const { productId, name, description, price, category, subCategory, bestseller, sizes } = req.body;
+    
+    const product = await productModel.findById(productId);
+    if (!product) {
+      return res.json({ success: false, message: "Product not found" });
+    }
+
+    const updateData = {
+      name: name || product.name,
+      description: description || product.description,
+      price: Number(price) || product.price,
+      category: category || product.category,
+      subCategory: subCategory || product.subCategory,
+      bestseller: bestseller === true || bestseller === "true",
+      sizes: sizes ? JSON.parse(sizes) : product.sizes,
+    };
+
+    // Handle new images if uploaded
+    const image1 = req.files?.image1?.[0];
+    const image2 = req.files?.image2?.[0];
+    const image3 = req.files?.image3?.[0];
+    const image4 = req.files?.image4?.[0];
+
+    const newImages = [];
+    const oldImages = product.images || [];
+
+    // Map each slot - use new upload or keep existing
+    const uploadImage = async (file, fallbackUrl) => {
+      if (file) {
+        const result = await cloudinary.uploader.upload(file.path, { resource_type: "image" });
+        return result.secure_url;
+      }
+      return fallbackUrl;
+    };
+
+    if (image1 || oldImages[0]) newImages.push(await uploadImage(image1, oldImages[0]));
+    if (image2 || oldImages[1]) newImages.push(await uploadImage(image2, oldImages[1]));
+    if (image3 || oldImages[2]) newImages.push(await uploadImage(image3, oldImages[2]));
+    if (image4 || oldImages[3]) newImages.push(await uploadImage(image4, oldImages[3]));
+
+    if (newImages.length > 0) {
+      updateData.images = newImages;
+    }
+
+    await productModel.findByIdAndUpdate(productId, updateData);
+    res.json({ success: true, message: "Product updated successfully" });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+export { addProduct, listProducts, singleProduct, removeProduct, updateProduct };
