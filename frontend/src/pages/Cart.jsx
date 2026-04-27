@@ -1,4 +1,4 @@
-import { useContext, useMemo } from "react";
+import { useContext, useMemo, useEffect } from "react";
 import ShopContext from "../context/ShopContext";
 import Title from "../components/Title";
 import { assets } from "../assets/assets";
@@ -12,7 +12,16 @@ const Cart = () => {
     removeFromCart,
     updateQuantity,
     navigate,
+    token,
   } = useContext(ShopContext);
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+  }, [token, navigate]);
+
+  if (!token) return null;
 
   // in the cart i store products by their productId , quantity and size
   // But i need the other product info like name , price , image etc.

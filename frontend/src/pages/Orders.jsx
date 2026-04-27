@@ -1,10 +1,18 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import Title from "../components/Title";
 import ShopContext from "../context/ShopContext";
 
 const Orders = () => {
-  const { products, currency } = useContext(ShopContext);
-  console.log(products);
+  const { products, currency, token, navigate } = useContext(ShopContext);
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+  }, [token, navigate]);
+
+  if (!token) return null;
+
   return (
     <div className="pt-16 border-t">
       <div className="text-2xl">

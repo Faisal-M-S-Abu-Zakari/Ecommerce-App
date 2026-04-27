@@ -4,7 +4,7 @@ import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import ShopContext from "../context/ShopContext";
 const NavBar = () => {
   const [visible, setVisible] = useState(false);
-  const { setShowSearch, CartCount } = useContext(ShopContext);
+  const { setShowSearch, CartCount, token, logout } = useContext(ShopContext);
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -44,22 +44,33 @@ const NavBar = () => {
           className="w-5 cursor-pointer"
           alt=""
         />
-        <div className="group relative">
-          <Link to={"/login"}>
+        {token ? (
+          <div className="group relative">
             <img
               src={assets.profile_icon}
               className="w-5 cursor-pointer"
               alt=""
             />
-          </Link>
-          <div className="hidden group-hover:block right-0 absolute pt-4 dropdown-menu">
-            <div className="flex flex-col gap-2 bg-slate-100 px-5 py-3 rounded w-36 text-gray-500">
-              <p className="hover:text-black cursor-pointer">My Profile</p>
-              <p className="hover:text-black cursor-pointer">Orders</p>
-              <p className="hover:text-black cursor-pointer">Logout</p>
+            <div className="hidden group-hover:block right-0 absolute pt-4 dropdown-menu">
+              <div className="flex flex-col gap-2 bg-slate-100 px-5 py-3 rounded w-36 text-gray-500">
+                <p className="hover:text-black cursor-pointer">My Profile</p>
+                <p
+                  onClick={() => navigate("/orders")}
+                  className="hover:text-black cursor-pointer"
+                >
+                  Orders
+                </p>
+                <p onClick={logout} className="hover:text-black cursor-pointer">
+                  Logout
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <Link to={"/login"}>
+            <img src={assets.profile_icon} className="w-5 cursor-pointer" alt="" />
+          </Link>
+        )}
         <Link to="/cart" className="relative">
           <img
             src={assets.cart_icon}

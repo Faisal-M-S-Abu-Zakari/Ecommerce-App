@@ -1,13 +1,24 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import ShopContext from "../context/ShopContext";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  // if i in login page then the name input will not appear , it will apear only in register
   const [currentState, setCurrentState] = useState("Login");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const onSubmitHandler = (e) => {
+  const { login, register } = useContext(ShopContext);
+  const navigate = useNavigate();
+
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
+    if (currentState === "Login") {
+      const success = await login(email, password);
+      if (success) navigate("/");
+    } else {
+      const success = await register(name, email, password);
+      if (success) navigate("/");
+    }
   };
   return (
     <form

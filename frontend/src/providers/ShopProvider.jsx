@@ -16,6 +16,73 @@ const ShopContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  // Auth state
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(() => localStorage.getItem("token") || "");
+
+  useEffect(() => {
+    if (token) {
+      localStorage.setItem("token", token);
+    } else {
+      localStorage.removeItem("token");
+    }
+  }, [token]);
+
+  const login = async (email, password) => {
+    try {
+      const response = await fetch(`${API_URL}/api/user/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await response.json();
+      if (data.token) {
+        setToken(data.token);
+        setUser({ email });
+        toast.success("Logged in successfully");
+        return true;
+      } else {
+        toast.error(data.message || "Login failed");
+        return false;
+      }
+    } catch (error) {
+      toast.error(error.message);
+      return false;
+    }
+  };
+
+  const register = async (name, email, password) => {
+    try {
+      const response = await fetch(`${API_URL}/api/user/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
+      const data = await response.json();
+      if (data.token) {
+        setToken(data.token);
+        setUser({ name, email });
+        toast.success("Registered successfully");
+        return true;
+      } else {
+        toast.error(data.message || "Registration failed");
+        return false;
+      }
+    } catch (error) {
+      toast.error(error.message);
+      return false;
+    }
+  };
+
+  const logout = () => {
+    setToken("");
+    setUser(null);
+    setCartProducts([]);
+    localStorage.removeItem("token");
+    navigate("/");
+    toast.success("Logged out successfully");
+  };
+
   const fetchProducts = async () => {
     try {
       const response = await fetch(`${API_URL}/api/product/list`);
@@ -120,6 +187,11 @@ const ShopContextProvider = ({ children }) => {
     cartTotal,
     navigate,
     API_URL,
+    user,
+    token,
+    login,
+    register,
+    logout,
   };
 
   return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>;
