@@ -1,42 +1,44 @@
 import { assets } from "./../assets/assets";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <div>
-      <div className="flex flex-col gap-14 sm:grid grid-cols-[3fr_1fr_1fr] my-10 mt-40 text-sm">
-        <div>
-          <img src={assets.logo} className="mb-5 w-32" alt="" />
-          <p className="w-full md:w-2/3 text-gray-600">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Blanditiis
-            vitae laboriosam architecto eveniet vero tempora, repellendus
-            consectetur minima omnis itaque porro adipisci eum consequuntur
-            perspiciatis obcaecati saepe aperiam quas accusantium?
+    <footer className="bg-gray-50 border-t border-gray-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+          <div className="md:col-span-2">
+            <img src={assets.logo} className="h-8 mb-6" alt="" />
+            <p className="text-gray-500 text-sm leading-relaxed max-w-md">
+              Crafting modern fashion for the conscious consumer. Quality materials, sustainable practices, timeless design.
+            </p>
+          </div>
+          
+          <div>
+            <h3 className="text-sm font-semibold uppercase tracking-wider mb-4">Company</h3>
+            <ul className="space-y-3">
+              <li><Link to="/" className="text-gray-500 hover:text-black text-sm transition-colors">Home</Link></li>
+              <li><Link to="/about" className="text-gray-500 hover:text-black text-sm transition-colors">About</Link></li>
+              <li><Link to="/collection" className="text-gray-500 hover:text-black text-sm transition-colors">Collection</Link></li>
+              <li><Link to="/contact" className="text-gray-500 hover:text-black text-sm transition-colors">Contact</Link></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h3 className="text-sm font-semibold uppercase tracking-wider mb-4">Contact</h3>
+            <ul className="space-y-3">
+              <li className="text-gray-500 text-sm">+1 (555) 123-4567</li>
+              <li className="text-gray-500 text-sm">hello@store.com</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div className="border-t border-gray-200 mt-12 pt-8">
+          <p className="text-center text-gray-400 text-sm">
+            © 2026 Store. All rights reserved.
           </p>
         </div>
-        <div>
-          <p className="mb-5 font-medium text-xl">COMPANY</p>
-          <ul className="flex flex-col gap-1 text-gray-600">
-            <li>Home</li>
-            <li>About us</li>
-            <li>Delivery</li>
-            <li>Privacy policy</li>
-          </ul>
-        </div>
-        <div>
-          <p className="mb-5 font-medium text-xl">GET IN TOUCH</p>
-          <ul className="flex flex-col gap-1 text-gray-600">
-            <li>+90 534 259 48 19</li>
-            <li>yourEmail@example.com</li>
-          </ul>
-        </div>
       </div>
-      <div>
-        <hr />
-        <p className="py-5 text-sm text-center">
-          Copyright 2026@ FOREVER Store - All Right Reserved.
-        </p>
-      </div>
-    </div>
+    </footer>
   );
 };
 
