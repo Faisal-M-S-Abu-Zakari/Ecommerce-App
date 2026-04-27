@@ -50,9 +50,11 @@ const Cart = () => {
       <div>
         {/* here i will render only the products that were added to the cart , so i will map on cart Products and take there info from the map */}
         {cartProducts.map((cartItem) => {
-          const productInfo = productMap[cartItem.productId];
+          const productInfo = productMap[cartItem?.productId];
 
           if (!productInfo) return null;
+
+          const productImage = productInfo.images?.[0] || productInfo.image?.[0];
 
           return (
             <div
@@ -62,7 +64,7 @@ const Cart = () => {
               {/* Product Info */}
               <div className="flex items-start gap-6">
                 <img
-                  src={productInfo.image[0]}
+                  src={productImage || "https://via.placeholder.com/100"}
                   alt={productInfo.name}
                   className="w-16 sm:w-20"
                 />

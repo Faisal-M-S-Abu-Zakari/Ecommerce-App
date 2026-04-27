@@ -76,11 +76,17 @@ const ShopContextProvider = ({ children }) => {
   useEffect(() => {
     if (token) {
       localStorage.setItem("token", token);
-      loadCart();
     } else {
       localStorage.removeItem("token");
     }
   }, [token]);
+
+  // Load cart after products are loaded on initial page load
+  useEffect(() => {
+    if (token && products.length > 0) {
+      loadCart();
+    }
+  }, [token, products]);
 
   const login = async (email, password) => {
     try {

@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from "react";
+import { useContext, useMemo, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import ShopContext from "../context/ShopContext";
 import { assets } from "../assets/assets";
@@ -6,8 +6,69 @@ import RelatedProducts from "../components/RelatedProducts";
 
 const Product = () => {
   const { productId } = useParams();
-  const { products, currency, addToCart } = useContext(ShopContext);
+  const { products, currency, addToCart, token, user } = useContext(ShopContext);
   const [selectedSize, setSelectedSize] = useState("");
+  const [comments, setComments] = useState([]);
+  const [loadingComments, setLoadingComments] = useState(true);
+  const [newComment, setNewComment] = useState("");
+  const [newRating, setNewRating] = useState(5);
+  const [activeTab, setActiveTab] = useState("description");
+
+  const fetchComments = async () => {
+    try {
+      const res = await fetch(import.meta.env.VITE_API_URL + "/api/comment/product", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productId }),
+      });
+      const data = await res.json();
+      if (data.success) setComments(data.comments || []);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoadingComments(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchComments();
+  }, [productId]);
+
+  const handleAddComment = async () => {
+    if (!token) {
+      alert("Please login to add a comment");
+      return;
+    }
+    if (!newComment.trim()) {
+      alert("Please write a comment");
+      return;
+    }
+    try {
+      const res = await fetch(import.meta.env.VITE_API_URL + "/api/comment/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          productId,
+          userId: user?._id || user?.id,
+          userName: user?.name || "Anonymous",
+          rating: newRating,
+          comment: newComment,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setNewComment("");
+        setNewRating(5);
+        fetchComments();
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const averageRating = comments.length > 0
+    ? (comments.reduce((sum, c) => sum + (c.rating || 0), 0) / comments.length).toFixed(1)
+    : 0;
   // المنتج مشتق مباشرة → لا state ولا effect
   const productData = useMemo(() => {
     return products.find((item) => item._id === productId);
@@ -102,22 +163,78 @@ const Product = () => {
       {/*  Description and review section */}
       <div className="mt-20">
         <div className="flex">
-          <b className="px-5 py-3 border text-sm">Description</b>
-          <p className="px-5 py-3 border text-sm">Reviews (122) </p>
+          <button
+            onClick={() => setActiveTab("description")}
+            className={`px-5 py-3 border text-sm ${activeTab === "description" ? "bg-black text-white" : ""}`}
+          >
+            Description
+          </button>
+          <button
+            onClick={() => setActiveTab("reviews")}
+            className={`px-5 py-3 border text-sm ${activeTab === "reviews" ? "bg-black text-white" : ""}`}
+          >
+            Reviews ({comments.length}) {averageRating > 0 && `★ ${averageRating}`}
+          </button>
         </div>
-        <div className="flex flex-col gap-4 px-6 py-6 border text-gray-500 text-sm">
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Est
-            similique inventore adipisci ab, omnis dignissimos non consequuntur,
-            repudiandae suscipit tenetur tempore rerum libero nihil aperiam
-            quaerat natus cumque error voluptatibus!
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Est
-            similique inventore adipisci ab, omnis dignissimos non consequuntur,
-            repudiandae suscipit tenetur tempore rerum libero nihil aperiam
-            quaerat natus cumque error voluptatibus!
-          </p>
+        <div className="border p-6">
+          {activeTab === "description" ? (
+            <div className="flex flex-col gap-4 text-gray-500 text-sm">
+              <p>{productData.description || "No description available."}</p>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-6">
+              {/* Add Comment Form */}
+              {token && (
+                <div className="flex flex-col gap-3 p-4 bg-gray-50 rounded">
+                  <h3 className="font-medium">Add Your Review</h3>
+                  <div className="flex items-center gap-2">
+                    <span>Rating:</span>
+                    <select
+                      value={newRating}
+                      onChange={(e) => setNewRating(Number(e.target.value))}
+                      className="border p-1"
+                    >
+                      {[1, 2, 3, 4, 5].map((r) => (
+                        <option key={r} value={r}>{r} ★</option>
+                      ))}
+                    </select>
+                  </div>
+                  <textarea
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    placeholder="Write your review..."
+                    className="border p-2 w-full h-20"
+                  />
+                  <button
+                    onClick={handleAddComment}
+                    className="bg-black text-white px-4 py-2 self-start"
+                  >
+                    Submit Review
+                  </button>
+                </div>
+              )}
+
+              {/* Comments List */}
+              {loadingComments ? (
+                <p className="text-gray-500">Loading reviews...</p>
+              ) : comments.length === 0 ? (
+                <p className="text-gray-500">No reviews yet. Be the first to review!</p>
+              ) : (
+                comments.map((comment, index) => (
+                  <div key={index} className="border-b pb-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="font-medium">{comment.userName}</span>
+                      <span className="text-yellow-500">{"★".repeat(comment.rating || 5)}</span>
+                      <span className="text-gray-400 text-xs">
+                        {comment.date ? new Date(comment.date).toLocaleDateString() : ""}
+                      </span>
+                    </div>
+                    <p className="text-gray-600">{comment.comment}</p>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
         </div>
       </div>
       {/* Display Related Products */}
