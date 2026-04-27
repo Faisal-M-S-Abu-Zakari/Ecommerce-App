@@ -93,7 +93,21 @@ const registerUser = async (req, res) => {
 
 // Route For admin login
 const loginAdmin = async (req, res) => {
-  res.json({ message: "Admin loggedIn Successfully" });
+  try {
+    const { email, password } = req.body;
+    const user = await userModel.findOne({ email, isAdmin: true });
+    if (!user) {
+      return res.json({ success: false, message: "Invalid admin credentials" });
+    }
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    if (!isPasswordCorrect) {
+      return res.json({ success: false, message: "Invalid password" });
+    }
+    const token = generateAuthToken(user._id);
+    res.json({ success: true, token });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
 };
 
 export { loginUser, registerUser, loginAdmin };
