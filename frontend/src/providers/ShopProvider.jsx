@@ -168,6 +168,13 @@ const ShopContextProvider = ({ children }) => {
   }, [products]);
 
   const addToCart = (productId, size) => {
+    // Redirect to login if not logged in
+    if (!token) {
+      navigate("/login");
+      toast.error("Please login to add items to cart");
+      return;
+    }
+
     // if the user doesn't select a size then show an error message
     if (!size) {
       toast.error("Please select a size");
