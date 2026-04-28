@@ -277,6 +277,17 @@ const ShopContextProvider = ({ children }) => {
       return { success: false };
     }
     try {
+      const itemsWithDetails = cartProducts.map(item => {
+        const product = productMap[item.productId];
+        return {
+          productId: item.productId,
+          name: product?.name || "Unknown Product",
+          price: product?.price || 0,
+          quantity: item.quantity,
+          size: item.size,
+        };
+      });
+
       const response = await fetch(`${API_URL}/api/order/place`, {
         method: "POST",
         headers: {
@@ -285,7 +296,7 @@ const ShopContextProvider = ({ children }) => {
         },
         body: JSON.stringify({
           userId: getUserId(),
-          items: cartProducts,
+          items: itemsWithDetails,
           amount: cartTotal + delivery_fee,
           address,
           paymentMethod,
