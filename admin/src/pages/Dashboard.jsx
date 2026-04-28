@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { backendUrl } from "../App";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Dashboard = ({ token }) => {
   const [loading, setLoading] = useState(true);
