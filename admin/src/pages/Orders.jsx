@@ -14,9 +14,8 @@ const Orders = ({ token }) => {
     }
 
     try {
-      const response = await axios.post(
+      const response = await axios.get(
         backendUrl + "/api/order/list",
-        {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
       if (response.data.success) {
@@ -25,6 +24,7 @@ const Orders = ({ token }) => {
         toast.error(response.data.message);
       }
     } catch (error) {
+      console.log(error);
       toast.error(error.message);
     }
   };

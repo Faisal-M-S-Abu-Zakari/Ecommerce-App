@@ -99,6 +99,7 @@ const ShopContextProvider = ({ children }) => {
       if (data.token) {
         setToken(data.token);
         setUser({ email });
+        getUserOrders();
         toast.success("Logged in successfully");
         return true;
       } else {
@@ -138,6 +139,7 @@ const ShopContextProvider = ({ children }) => {
     setToken("");
     setUser(null);
     setCartProducts([]);
+    setOrders([]);
     localStorage.removeItem("token");
     navigate("/");
     toast.success("Logged out successfully");
@@ -159,6 +161,22 @@ const ShopContextProvider = ({ children }) => {
 
   useEffect(() => {
     fetchProducts();
+    getUserOrders();
+
+    const productInterval = setInterval(() => {
+      fetchProducts();
+    }, 10000);
+
+    const ordersInterval = setInterval(() => {
+      if (token) {
+        getUserOrders();
+      }
+    }, 10000);
+
+    return () => {
+      clearInterval(productInterval);
+      clearInterval(ordersInterval);
+    };
   }, []);
 
   const productMap = useMemo(() => {
@@ -264,6 +282,7 @@ const ShopContextProvider = ({ children }) => {
       if (data.success) {
         setCartProducts([]);
         syncCartToBackend([]);
+        getUserOrders();
         toast.success("Order placed successfully!");
         return { success: true, orderId: data.orderId };
       } else {
