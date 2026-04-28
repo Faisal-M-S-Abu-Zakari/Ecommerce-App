@@ -47,6 +47,10 @@ const Orders = ({ token }) => {
 
   useEffect(() => {
     fetchAllOrders();
+    const interval = setInterval(() => {
+      fetchAllOrders();
+    }, 10000);
+    return () => clearInterval(interval);
   }, [token]);
 
   return (
