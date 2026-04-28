@@ -8,17 +8,19 @@ const RelatedProducts = ({ category, subCategory }) => {
 
   const relatedProducts = useMemo(() => {
     if (products.length > 0) {
-      return products.filter(
-        (product) =>
-          product.category === category && product.subCategory === subCategory,
-      );
-      // .slice(0, 5);
+      return products
+        .filter(
+          (product) =>
+            product.category === category &&
+            product.subCategory === subCategory,
+        )
+        .slice(0, 5);
     }
     return [];
   }, [products, category, subCategory]);
 
   return (
-    <div className="my-24">
+    <div className="my-24 px-20">
       <div className="py-2 text-3xl text-center">
         <Title text1={"RELATED"} text2={"PRODUCTS"} />
       </div>

@@ -4,10 +4,12 @@ import ShopContext from "../context/ShopContext";
 import { assets } from "../assets/assets";
 import RelatedProducts from "../components/RelatedProducts";
 import { toast } from "react-toastify";
+import { useLanguage } from "../context/LanguageContext";
 
 const Product = () => {
   const { productId } = useParams();
   const { products, currency, addToCart, token, user, getUserId, navigate } = useContext(ShopContext);
+  const { t } = useLanguage();
   const [selectedSize, setSelectedSize] = useState("");
   const [comments, setComments] = useState([]);
   const [loadingComments, setLoadingComments] = useState(true);
@@ -41,12 +43,12 @@ const Product = () => {
 
   const handleAddComment = async () => {
     if (!token) {
-      toast.error("Please login to add a comment");
+      toast.error(t.pleaseLogin);
       navigate("/login");
       return;
     }
     if (!newComment.trim()) {
-      toast.error("Please write a comment");
+      toast.error(t.writeComment);
       return;
     }
     try {
@@ -67,13 +69,13 @@ const Product = () => {
         setNewComment("");
         setNewRating(5);
         fetchComments();
-        toast.success("Comment added successfully!");
+        toast.success(t.commentAdded);
       } else {
-        toast.error(data.message || "Failed to add comment");
+        toast.error(data.message || t.commentFailed);
       }
     } catch (err) {
       console.error(err);
-      toast.error("Failed to add comment");
+      toast.error(t.commentFailed);
     }
   };
 
@@ -142,7 +144,7 @@ const Product = () => {
             {productData.description}
           </p>
           <div className="flex flex-col gap-4 my-8">
-            <p>Select Size</p>
+            <p>{t.selectSize}</p>
             <div className="flex gap-2">
               {productData.sizes.map((size, index) => {
                 return (
@@ -160,21 +162,21 @@ const Product = () => {
           <button
             onClick={() => {
               if (!selectedSize) {
-                toast.error("Please select a size");
+                toast.error(t.selectSizeFirst);
                 return;
               }
               addToCart(productData._id, selectedSize);
-              toast.success("Added to cart!");
+              toast.success(t.addedToCart);
             }}
             className="bg-black active:bg-gray-700 px-8 py-3 text-white text-sm cursor-pointer"
           >
-            ADD TO CART
+            {t.addToCart.toUpperCase()}
           </button>
           <hr className="mt-8 sm:w-4/5" />
           <div className="flex flex-col gap-1 mt-5 text-gray-500 text-sm">
-            <p className="">100% Original product.</p>
-            <p className="">Cash on delivery is available on this product.</p>
-            <p className="">Easy return and exchange policy within 7 days.</p>
+            <p className="">{t.originalProduct}</p>
+            <p className="">{t.codAvailable}</p>
+            <p className="">{t.returnPolicy}</p>
           </div>
         </div>
       </div>
@@ -185,28 +187,28 @@ const Product = () => {
             onClick={() => setActiveTab("description")}
             className={`px-5 py-3 border text-sm ${activeTab === "description" ? "bg-black text-white" : ""}`}
           >
-            Description
+            {t.description}
           </button>
           <button
             onClick={() => setActiveTab("reviews")}
             className={`px-5 py-3 border text-sm ${activeTab === "reviews" ? "bg-black text-white" : ""}`}
           >
-            Reviews ({comments.length}) {averageRating > 0 && `★ ${averageRating}`}
+            {t.reviews} ({comments.length}) {averageRating > 0 && `★ ${averageRating}`}
           </button>
         </div>
         <div className="border p-6">
           {activeTab === "description" ? (
             <div className="flex flex-col gap-4 text-gray-500 text-sm">
-              <p>{productData.description || "No description available."}</p>
+              <p>{productData.description || t.noDescription}</p>
             </div>
           ) : (
             <div className="flex flex-col gap-6">
               {/* Add Comment Form */}
               {token && (
                 <div className="flex flex-col gap-3 p-4 bg-gray-50 rounded">
-                  <h3 className="font-medium">Add Your Review</h3>
+                  <h3 className="font-medium">{t.addReview}</h3>
                   <div className="flex items-center gap-2">
-                    <span>Rating:</span>
+                    <span>{t.rating}:</span>
                     <select
                       value={newRating}
                       onChange={(e) => setNewRating(Number(e.target.value))}
@@ -220,23 +222,23 @@ const Product = () => {
                   <textarea
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
-                    placeholder="Write your review..."
+                    placeholder={t.writeReview}
                     className="border p-2 w-full h-20"
                   />
                   <button
                     onClick={handleAddComment}
                     className="bg-black text-white px-4 py-2 self-start"
                   >
-                    Submit Review
+                    {t.submitReview}
                   </button>
                 </div>
               )}
 
               {/* Comments List */}
               {loadingComments ? (
-                <p className="text-gray-500">Loading reviews...</p>
+                <p className="text-gray-500">{t.loadingReviews}</p>
               ) : comments.length === 0 ? (
-                <p className="text-gray-500">No reviews yet. Be the first to review!</p>
+                <p className="text-gray-500">{t.noReviews}</p>
               ) : (
                 comments.map((comment, index) => (
                   <div key={index} className="border-b pb-4">

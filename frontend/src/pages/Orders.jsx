@@ -1,9 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import Title from "../components/Title";
 import ShopContext from "../context/ShopContext";
+import { useLanguage } from "../context/LanguageContext";
 
 const Orders = () => {
   const { currency, token, navigate, products, getUserOrders, orders } = useContext(ShopContext);
+  const { t } = useLanguage();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -28,55 +30,62 @@ const Orders = () => {
   };
 
   return (
-    <div className="pt-16 border-t">
-      <div className="text-2xl">
-        <Title text1={"MY"} text2={"ORDERS"} />
-      </div>
+    <div className="py-20 min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-10">
+          <Title text1={t.yourOrders} text2={""} />
+        </div>
 
-      <div>
-        {orders.length === 0 ? (
-          <p className="py-8 text-gray-500">No orders yet</p>
-        ) : (
-          orders.map((order) => (
-            <div key={order._id} className="border-t border-b py-4">
-              <div className="flex flex-col gap-2 mb-4">
-                <p className="font-medium">Order ID: {order._id}</p>
-                <p className="text-sm text-gray-500">Date: {formatDate(order.date)}</p>
-                <p className="text-sm text-gray-500">Status: {order.status}</p>
-                <p className="text-sm text-gray-500">Payment: {order.paymentMethod}</p>
-              </div>
-              {order.items.map((item, index) => {
-                const product = productMap[item.productId];
-                if (!product) return null;
-                return (
-                  <div
-                    key={index}
-                    className="flex md:flex-row flex-col md:justify-between items-center gap-4 py-4 border-b last:border-b-0 text-gray-700"
-                  >
-                    <div className="flex items-start gap-6 text-sm">
-                      <img className="w-16 sm:w-20" src={product.images?.[0]} alt={product.name} />
-                      <div>
-                        <p className="font-medium sm:text-base">{product.name}</p>
-                        <div className="flex items-center gap-3 mt-1 text-gray-500 text-base">
-                          <p className="text-lg">
-                            {currency}
-                            {product.price}
-                          </p>
-                          <p>Quantity: {item.quantity}</p>
-                          <p>Size: {item.size}</p>
+        <div className="space-y-6">
+          {orders.length === 0 ? (
+            <div className="text-center py-20">
+              <p className="text-gray-500 text-lg">{t.noOrders}</p>
+            </div>
+          ) : (
+            orders.map((order) => (
+              <div key={order._id} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
+                  <div>
+                    <p className="font-semibold text-[#1A1A1A]">Order ID: {order._id.slice(0, 10)}...</p>
+                    <p className="text-sm text-gray-500">{formatDate(order.date)}</p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="bg-[#BC9355]/10 text-[#BC9355] px-4 py-1 rounded-full text-sm font-medium">
+                      {order.status}
+                    </span>
+                    <span className="text-gray-500 text-sm">{order.paymentMethod}</span>
+                  </div>
+                </div>
+                <div className="border-t border-gray-100 pt-4">
+                  {order.items.map((item, index) => {
+                    const product = productMap[item.productId];
+                    if (!product) return null;
+                    return (
+                      <div
+                        key={index}
+                        className="flex items-center gap-4 py-4"
+                      >
+                        <img className="w-16 h-20 object-cover rounded-xl" src={product.images?.[0]} alt={product.name} />
+                        <div className="flex-1">
+                          <p className="font-medium text-[#1A1A1A]">{product.name}</p>
+                          <div className="flex items-center gap-3 mt-1 text-gray-500 text-sm">
+                            <span>{currency}{product.price}</span>
+                            <span className="bg-gray-100 px-2 py-0.5 rounded">{item.size}</span>
+                            <span>Qty: {item.quantity}</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <p className="bg-green-500 rounded-full min-w-2 h-2"></p>
-                      <p className="text-sm md:text-base">{order.status}</p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          ))
-        )}
+                    );
+                  })}
+                </div>
+                <div className="border-t border-gray-100 pt-4 mt-4 flex justify-between items-center">
+                  <span className="text-gray-500">Total</span>
+                  <span className="font-bold text-lg text-[#1A1A1A]">{currency}{order.amount}</span>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
       </div>
     </div>
   );
