@@ -119,17 +119,19 @@ const Dashboard = ({ token }) => {
             },
             body: JSON.stringify({ avatar: reader.result }),
           });
+          console.log("Avatar upload response status:", res.status);
           const json = await res.json();
+          console.log("Avatar upload response:", json);
 
           if (json.success && json.avatar) {
             setAdmin((prev) => ({ ...prev, avatar: json.avatar }));
             toast.success("Avatar updated successfully");
           } else {
-            alert(json.message || "Failed to upload avatar");
+            toast.error(json.message || "Failed to upload avatar");
           }
         } catch (error) {
           console.error("Avatar upload error:", error);
-          alert("Error uploading avatar");
+          toast.error("Error uploading avatar");
         } finally {
           setUploadingAvatar(false);
         }
