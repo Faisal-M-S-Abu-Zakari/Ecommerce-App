@@ -2,6 +2,7 @@ import validator from "validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import userModel from "../models/userModel.js";
+import { v2 as cloudinary } from "cloudinary";
 
 // Generate a JWT token with the user's ID as the payload and a secret key from the environment variables
 const generateAuthToken = function (id) {
@@ -14,7 +15,10 @@ const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      return res.json({ success: false, message: "Please fill all the fields" });
+      return res.json({
+        success: false,
+        message: "Please fill all the fields",
+      });
     }
     if (!validator.isEmail(email)) {
       return res.json({ success: false, message: "Invalid email format" });
@@ -34,7 +38,12 @@ const loginUser = async (req, res) => {
       return res.json({ success: false, message: "Invalid password" });
     }
     const token = generateAuthToken(existingUser._id);
-    res.json({ success: true, message: "User loggedIn Successfully", token, user: { name: existingUser.name, email: existingUser.email } });
+    res.json({
+      success: true,
+      message: "User loggedIn Successfully",
+      token,
+      user: { name: existingUser.name, email: existingUser.email },
+    });
   } catch (error) {
     res.json({ success: false, message: error.message });
   }
@@ -117,7 +126,10 @@ const getAdminProfile = async (req, res) => {
     if (!user || !user.isAdmin) {
       return res.json({ success: false, message: "Admin not found" });
     }
-    res.json({ success: true, admin: { email: user.email, name: user.name, avatar: user.avatar || "" } });
+    res.json({
+      success: true,
+      admin: { email: user.email, name: user.name, avatar: user.avatar || "" },
+    });
   } catch (error) {
     res.json({ success: false, message: error.message });
   }
@@ -137,7 +149,9 @@ const uploadAdminAvatar = async (req, res) => {
       transformation: [{ width: 200, height: 200, crop: "fill" }],
     });
     console.log("Cloudinary upload success:", uploadedImage.secure_url);
-    await userModel.findByIdAndUpdate(req.user._id, { avatar: uploadedImage.secure_url });
+    await userModel.findByIdAndUpdate(req.user._id, {
+      avatar: uploadedImage.secure_url,
+    });
     res.json({ success: true, avatar: uploadedImage.secure_url });
   } catch (error) {
     console.log("Avatar upload error:", error);
@@ -167,4 +181,12 @@ const updateCart = async (req, res) => {
   }
 };
 
-export { loginUser, registerUser, loginAdmin, getCart, updateCart, getAdminProfile, uploadAdminAvatar };
+export {
+  loginUser,
+  registerUser,
+  loginAdmin,
+  getCart,
+  updateCart,
+  getAdminProfile,
+  uploadAdminAvatar,
+};
