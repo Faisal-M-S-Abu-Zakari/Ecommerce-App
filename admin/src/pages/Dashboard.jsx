@@ -37,12 +37,10 @@ const Dashboard = ({ token }) => {
         // orders (GET /api/order/list) - adminAuth required
         try {
           const oRes = await fetch(`${backendUrl}/api/order/list`, {
-            method: "POST",
+            method: "GET",
             headers: {
-              "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({}),
           });
           if (oRes.ok) {
             const oJson = await oRes.json();
@@ -52,32 +50,45 @@ const Dashboard = ({ token }) => {
           console.log("Orders fetch error");
         }
 
+        // comments (GET /api/comment/all)
+        try {
+          const cRes = await fetch(`${backendUrl}/api/comment/all`);
+          if (cRes.ok) {
+            const cJson = await cRes.json();
+            commentsCount = Array.isArray(cJson.comments) ? cJson.comments.length : 0;
+          }
+        } catch (e) {
+          console.log("Comments fetch error");
+        }
+
         setCounts({
           products: productsCount,
           orders: ordersCount,
-          comments: 0,
+          comments: commentsCount,
         });
 
-        // fetch admin profile - no error if fails
-        try {
-          const adminRes = await fetch(`${backendUrl}/api/user/admin`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email: "", password: "" }),
-          });
-          if (adminRes.ok) {
-            const adminJson = await adminRes.json();
-            if (adminJson.success && token) {
-              const savedAvatar = localStorage.getItem("adminAvatar");
-              setAdmin({
-                name: "Admin",
-                email: "admin@store.com",
-                avatar: savedAvatar || "",
-              });
+        // fetch admin profile
+        if (token) {
+          try {
+            const adminRes = await fetch(`${backendUrl}/api/user/admin/profile`, {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+            if (adminRes.ok) {
+              const adminJson = await adminRes.json();
+              if (adminJson.success && adminJson.admin) {
+                setAdmin({
+                  name: adminJson.admin.name || "Admin",
+                  email: adminJson.admin.email || "",
+                  avatar: adminJson.admin.avatar || "",
+                });
+              }
             }
+          } catch (e) {
+            console.log("Admin profile fetch error", e);
           }
-        } catch (e) {
-          console.log("Admin profile fetch error");
         }
       } catch (err) {
         console.error("Dashboard fetch error:", err);
@@ -95,25 +106,36 @@ const Dashboard = ({ token }) => {
 
     try {
       setUploadingAvatar(true);
-      const formData = new FormData();
-      formData.append("avatar", file);
 
-      const res = await fetch(`${backendUrl}/api/user/admin/avatar`, {
-        method: "POST",
-        headers: { token: token || "" },
-        body: formData,
-      });
-      const json = await res.json();
+      const reader = new FileReader();
+      reader.onload = async () => {
+        try {
+          const res = await fetch(`${backendUrl}/api/user/admin/avatar`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ avatar: reader.result }),
+          });
+          const json = await res.json();
 
-      if (json.success && json.avatar) {
-        setAdmin((prev) => ({ ...prev, avatar: json.avatar }));
-      } else {
-        alert(json.message || "Failed to upload avatar");
-      }
+          if (json.success && json.avatar) {
+            setAdmin((prev) => ({ ...prev, avatar: json.avatar }));
+            toast.success("Avatar updated successfully");
+          } else {
+            alert(json.message || "Failed to upload avatar");
+          }
+        } catch (error) {
+          console.error("Avatar upload error:", error);
+          alert("Error uploading avatar");
+        } finally {
+          setUploadingAvatar(false);
+        }
+      };
+      reader.readAsDataURL(file);
     } catch (error) {
       console.error("Avatar upload error:", error);
-      alert("Error uploading avatar");
-    } finally {
       setUploadingAvatar(false);
     }
   };

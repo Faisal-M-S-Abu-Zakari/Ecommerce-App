@@ -104,8 +104,40 @@ const loginAdmin = async (req, res) => {
       return res.json({ success: false, message: "Invalid password" });
     }
     const token = generateAuthToken(user._id);
-    res.json({ success: true, token });
+    res.json({ success: true, token, email: user.email });
   } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// Route for getting admin profile
+const getAdminProfile = async (req, res) => {
+  try {
+    const user = await userModel.findById(req.user.id).select("-password");
+    if (!user || !user.isAdmin) {
+      return res.json({ success: false, message: "Admin not found" });
+    }
+    res.json({ success: true, admin: { email: user.email, name: user.name, avatar: user.avatar || "" } });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// Route for uploading admin avatar
+const uploadAdminAvatar = async (req, res) => {
+  try {
+    const avatar = req.body.avatar;
+    if (!avatar) {
+      return res.json({ success: false, message: "No image provided" });
+    }
+    const uploadedImage = await cloudinary.uploader.upload(avatar, {
+      folder: "admin_avatars",
+      transformation: [{ width: 200, height: 200, crop: "fill" }],
+    });
+    await userModel.findByIdAndUpdate(req.user.id, { avatar: uploadedImage.secure_url });
+    res.json({ success: true, avatar: uploadedImage.secure_url });
+  } catch (error) {
+    console.log(error);
     res.json({ success: false, message: error.message });
   }
 };
@@ -132,4 +164,4 @@ const updateCart = async (req, res) => {
   }
 };
 
-export { loginUser, registerUser, loginAdmin, getCart, updateCart };
+export { loginUser, registerUser, loginAdmin, getCart, updateCart, getAdminProfile, uploadAdminAvatar };
