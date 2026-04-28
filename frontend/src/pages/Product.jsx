@@ -3,16 +3,21 @@ import { useParams } from "react-router-dom";
 import ShopContext from "../context/ShopContext";
 import { assets } from "../assets/assets";
 import RelatedProducts from "../components/RelatedProducts";
+import { toast } from "react-toastify";
 
 const Product = () => {
   const { productId } = useParams();
-  const { products, currency, addToCart, token, user } = useContext(ShopContext);
+  const { products, currency, addToCart, token, user, getUserId, navigate } = useContext(ShopContext);
   const [selectedSize, setSelectedSize] = useState("");
   const [comments, setComments] = useState([]);
   const [loadingComments, setLoadingComments] = useState(true);
   const [newComment, setNewComment] = useState("");
   const [newRating, setNewRating] = useState(5);
   const [activeTab, setActiveTab] = useState("description");
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [productId]);
 
   const fetchComments = async () => {
     try {
@@ -36,20 +41,22 @@ const Product = () => {
 
   const handleAddComment = async () => {
     if (!token) {
-      alert("Please login to add a comment");
+      toast.error("Please login to add a comment");
+      navigate("/login");
       return;
     }
     if (!newComment.trim()) {
-      alert("Please write a comment");
+      toast.error("Please write a comment");
       return;
     }
     try {
+      const userId = getUserId();
       const res = await fetch(import.meta.env.VITE_API_URL + "/api/comment/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           productId,
-          userId: user?._id || user?.id,
+          userId: userId,
           userName: user?.name || "Anonymous",
           rating: newRating,
           comment: newComment,
@@ -60,9 +67,13 @@ const Product = () => {
         setNewComment("");
         setNewRating(5);
         fetchComments();
+        toast.success("Comment added successfully!");
+      } else {
+        toast.error(data.message || "Failed to add comment");
       }
     } catch (err) {
       console.error(err);
+      toast.error("Failed to add comment");
     }
   };
 
@@ -147,7 +158,14 @@ const Product = () => {
             </div>
           </div>
           <button
-            onClick={() => addToCart(productData._id, selectedSize)}
+            onClick={() => {
+              if (!selectedSize) {
+                toast.error("Please select a size");
+                return;
+              }
+              addToCart(productData._id, selectedSize);
+              toast.success("Added to cart!");
+            }}
             className="bg-black active:bg-gray-700 px-8 py-3 text-white text-sm cursor-pointer"
           >
             ADD TO CART
