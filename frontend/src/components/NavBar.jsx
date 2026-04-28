@@ -35,12 +35,19 @@ const NavBar = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
-          <button
-            className="md:hidden p-2"
-            onClick={() => setVisible(true)}
-          >
-            <svg className="w-6 h-6 text-[#1A1A1A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          <button className="md:hidden p-2" onClick={() => setVisible(true)}>
+            <svg
+              className="w-6 h-6 text-[#1A1A1A]"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
             </svg>
           </button>
 
@@ -57,7 +64,9 @@ const NavBar = () => {
               to="/"
               className={({ isActive }) =>
                 `text-sm font-medium transition-colors ${
-                  isActive ? "text-[#BC9355]" : "text-gray-500 hover:text-[#BC9355]"
+                  isActive
+                    ? "text-[#BC9355]"
+                    : "text-gray-500 hover:text-[#BC9355]"
                 }`
               }
             >
@@ -67,7 +76,9 @@ const NavBar = () => {
               to="/collection"
               className={({ isActive }) =>
                 `text-sm font-medium transition-colors ${
-                  isActive ? "text-[#BC9355]" : "text-gray-500 hover:text-[#BC9355]"
+                  isActive
+                    ? "text-[#BC9355]"
+                    : "text-gray-500 hover:text-[#BC9355]"
                 }`
               }
             >
@@ -77,7 +88,9 @@ const NavBar = () => {
               to="/bestseller"
               className={({ isActive }) =>
                 `text-sm font-medium transition-colors ${
-                  isActive ? "text-[#BC9355]" : "text-gray-500 hover:text-[#BC9355]"
+                  isActive
+                    ? "text-[#BC9355]"
+                    : "text-gray-500 hover:text-[#BC9355]"
                 }`
               }
             >
@@ -87,7 +100,9 @@ const NavBar = () => {
               to="/about"
               className={({ isActive }) =>
                 `text-sm font-medium transition-colors ${
-                  isActive ? "text-[#BC9355]" : "text-gray-500 hover:text-[#BC9355]"
+                  isActive
+                    ? "text-[#BC9355]"
+                    : "text-gray-500 hover:text-[#BC9355]"
                 }`
               }
             >
@@ -97,7 +112,9 @@ const NavBar = () => {
               to="/contact"
               className={({ isActive }) =>
                 `text-sm font-medium transition-colors ${
-                  isActive ? "text-[#BC9355]" : "text-gray-500 hover:text-[#BC9355]"
+                  isActive
+                    ? "text-[#BC9355]"
+                    : "text-gray-500 hover:text-[#BC9355]"
                 }`
               }
             >
@@ -167,7 +184,7 @@ const NavBar = () => {
 
       {visible && (
         <div
-          className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm md:hidden"
+          className="fixed inset-0 z-100 bg-black/60 backdrop-blur-sm md:hidden"
           onClick={() => setVisible(false)}
         >
           <div
@@ -179,25 +196,55 @@ const NavBar = () => {
             <div className="flex justify-between items-center mb-10">
               <span className="text-xl font-bold">Menu</span>
               <button onClick={() => setVisible(false)}>
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             </div>
             <div className="flex flex-col gap-6">
-              <Link to="/" onClick={() => setVisible(false)} className="text-2xl font-bold hover:text-[#BC9355]">
+              <Link
+                to="/"
+                onClick={() => setVisible(false)}
+                className="text-2xl font-bold hover:text-[#BC9355]"
+              >
                 {t.home}
               </Link>
-              <Link to="/collection" onClick={() => setVisible(false)} className="text-2xl font-bold hover:text-[#BC9355]">
+              <Link
+                to="/collection"
+                onClick={() => setVisible(false)}
+                className="text-2xl font-bold hover:text-[#BC9355]"
+              >
                 {t.collection}
               </Link>
-              <Link to="/bestseller" onClick={() => setVisible(false)} className="text-2xl font-bold hover:text-[#BC9355]">
+              <Link
+                to="/bestseller"
+                onClick={() => setVisible(false)}
+                className="text-2xl font-bold hover:text-[#BC9355]"
+              >
                 {t.bestSeller}
               </Link>
-              <Link to="/about" onClick={() => setVisible(false)} className="text-2xl font-bold hover:text-[#BC9355]">
+              <Link
+                to="/about"
+                onClick={() => setVisible(false)}
+                className="text-2xl font-bold hover:text-[#BC9355]"
+              >
                 {t.about}
               </Link>
-              <Link to="/contact" onClick={() => setVisible(false)} className="text-2xl font-bold hover:text-[#BC9355]">
+              <Link
+                to="/contact"
+                onClick={() => setVisible(false)}
+                className="text-2xl font-bold hover:text-[#BC9355]"
+              >
                 {t.contact}
               </Link>
             </div>

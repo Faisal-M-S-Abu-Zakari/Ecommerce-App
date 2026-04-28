@@ -61,7 +61,9 @@ const PlaceOrder = () => {
         <div className="flex flex-col lg:flex-row gap-10">
           {/* Left Side */}
           <div className="flex-1">
-            <h2 className="text-xl font-semibold mb-6 text-[#1A1A1A]">{t.deliveryInfo}</h2>
+            <h2 className="text-xl font-semibold mb-6 text-[#1A1A1A]">
+              {t.deliveryInfo}
+            </h2>
             <div className="flex flex-col gap-4">
               <div className="flex gap-4">
                 <input
@@ -154,23 +156,33 @@ const PlaceOrder = () => {
           </div>
 
           {/* Right Side */}
-          <div className="lg:w-[400px]">
+          <div className="lg:w-100">
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-              <h2 className="text-xl font-semibold mb-6 text-[#1A1A1A]">{t.paymentMethod}</h2>
+              <h2 className="text-xl font-semibold mb-6 text-[#1A1A1A]">
+                {t.paymentMethod}
+              </h2>
               <div className="flex flex-col gap-3">
                 {[
                   { id: "stripe", label: t.stripe, img: assets.stripe_logo },
-                  { id: "razorpay", label: t.razorpay, img: assets.razorpay_logo },
+                  {
+                    id: "razorpay",
+                    label: t.razorpay,
+                    img: assets.razorpay_logo,
+                  },
                   { id: "cod", label: t.cod, img: null },
                 ].map((m) => (
                   <div
                     key={m.id}
                     onClick={() => setMethod(m.id)}
                     className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-all ${
-                      method === m.id ? "border-[#BC9355] bg-[#BC9355]/5" : "border-gray-200"
+                      method === m.id
+                        ? "border-[#BC9355] bg-[#BC9355]/5"
+                        : "border-gray-200"
                     }`}
                   >
-                    <div className={`w-4 h-4 rounded-full border-2 ${method === m.id ? "bg-[#BC9355] border-[#BC9355]" : "border-gray-300"}`}></div>
+                    <div
+                      className={`w-4 h-4 rounded-full border-2 ${method === m.id ? "bg-[#BC9355] border-[#BC9355]" : "border-gray-300"}`}
+                    ></div>
                     {m.img && <img src={m.img} alt="" className="h-5" />}
                     <span className="font-medium">{m.label}</span>
                   </div>

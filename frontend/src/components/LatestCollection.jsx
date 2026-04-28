@@ -8,7 +8,7 @@ const LatestCollection = () => {
   const { products } = useContext(ShopContext);
   const { t } = useLanguage();
 
-  const latestProducts = products.slice(0, 10);
+  const latestProducts = products.slice(0, 8);
 
   const getRating = (index) => {
     const fixedRatings = [4.5, 4.8, 4.7, 4.9, 4.6, 5.0, 4.4, 4.3, 4.7, 4.5];
@@ -27,7 +27,10 @@ const LatestCollection = () => {
               {t.springCollection}
             </h3>
           </div>
-          <Link to="/collection" className="text-sm font-bold flex items-center gap-2 border-b-2 border-[#BC9355] pb-1 hover:text-[#BC9355] transition-colors">
+          <Link
+            to="/collection"
+            className="text-sm font-bold flex items-center gap-2 border-b-2 border-[#BC9355] pb-1 hover:text-[#BC9355] transition-colors"
+          >
             <span>{t.viewAll}</span>
           </Link>
         </div>

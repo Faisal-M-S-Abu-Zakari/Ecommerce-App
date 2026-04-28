@@ -34,6 +34,7 @@ const ProductItem = ({ id, image, name, price, rating = 4.5 }) => {
         <img
           src={imageUrl || "https://via.placeholder.com/400x500"}
           alt={name}
+          loading="lazy"
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
         {/* Wishlist Button */}

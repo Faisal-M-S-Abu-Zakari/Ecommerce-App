@@ -20,7 +20,7 @@ const NewsletterBox = () => {
     <section className="bg-gray-50 py-32 border-t">
       <div className="max-w-4xl mx-auto px-6 text-center flex flex-col items-center justify-center ">
         <h4 className="text-4xl md:text-6xl font-black mb-8 tracking-tighter ">
-          {isRtl ? "كن أول من يعلم" : "Be the first to know "}
+          {isRtl ? "كن أول من يعلم" : "Be the first to know"}
         </h4>
         <p className="text-gray-500 text-xl mb-12 font-light">
           {isRtl

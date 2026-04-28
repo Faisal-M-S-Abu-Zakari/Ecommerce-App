@@ -9,9 +9,11 @@ import Cart from "./pages/Cart";
 import Login from "./pages/Login";
 import PlaceOrder from "./pages/PlaceOrder";
 import BestSellerPage from "./pages/BestSellerPage";
+import NotFound from "./pages/NotFound";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import SearchBar from "./components/SearchBar";
+import BackToTop from "./components/BackToTop";
 import { ToastContainer } from "react-toastify";
 import { LanguageProvider } from "./context/LanguageContext";
 
@@ -20,6 +22,7 @@ const App = () => {
     <LanguageProvider>
       <div className="min-h-screen bg-[#FDFCFB]">
         <ToastContainer />
+        <BackToTop />
         <NavBar />
         <SearchBar />
         <div className="pt-16">
@@ -34,6 +37,7 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/place-order" element={<PlaceOrder />} />
             <Route path="/orders" element={<Orders />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
         <Footer />

@@ -59,7 +59,11 @@ const Cart = () => {
 
         {!cartProducts || cartProducts.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20">
-            <img src={assets.cart_icon} alt="" className="w-20 h-20 opacity-30" />
+            <img
+              src={assets.cart_icon}
+              alt=""
+              className="w-20 h-20 opacity-30"
+            />
             <p className="mt-4 text-gray-500 text-lg">{t.cartEmpty}</p>
             <button
               onClick={() => navigate("/collection")}
@@ -76,7 +80,8 @@ const Cart = () => {
 
                 if (!productInfo) return null;
 
-                const productImage = productInfo.images?.[0] || productInfo.image?.[0];
+                const productImage =
+                  productInfo.images?.[0] || productInfo.image?.[0];
 
                 return (
                   <div
@@ -128,10 +133,10 @@ const Cart = () => {
               })}
             </div>
 
-            <div className="flex justify-end mt-10">
+            <div className="flex justify-start mt-10">
               <div className="w-full max-w-md">
                 <CartTotal />
-                <div className="w-full text-end">
+                <div className="w-full text-center ">
                   <button
                     onClick={() => navigate("/place-order")}
                     className="bg-[#BC9355] my-8 px-8 py-4 rounded-full text-white font-bold text-sm cursor-pointer hover:bg-[#a67d40] transition-all hover:shadow-lg"
