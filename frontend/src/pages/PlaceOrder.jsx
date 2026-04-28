@@ -54,6 +54,8 @@ const PlaceOrder = () => {
           <input
             required
             name="firstName"
+            onChange={handleInput}
+            value={address.firstName}
             className="px-3.5 py-1.5 border border-gray-300 rounded w-full"
             type="text"
             placeholder="First Name"
@@ -61,6 +63,8 @@ const PlaceOrder = () => {
           <input
             required
             name="lastName"
+            onChange={handleInput}
+            value={address.lastName}
             className="px-3.5 py-1.5 border border-gray-300 rounded w-full"
             type="text"
             placeholder="Last Name"
@@ -69,6 +73,8 @@ const PlaceOrder = () => {
         <input
           required
           name="email"
+          onChange={handleInput}
+          value={address.email}
           className="px-3.5 py-1.5 border border-gray-300 rounded w-full"
           type="email"
           placeholder="Email address"
@@ -76,6 +82,8 @@ const PlaceOrder = () => {
         <input
           required
           name="street"
+          onChange={handleInput}
+          value={address.street}
           className="px-3.5 py-1.5 border border-gray-300 rounded w-full"
           type="text"
           placeholder="Street"
@@ -84,6 +92,8 @@ const PlaceOrder = () => {
           <input
             required
             name="city"
+            onChange={handleInput}
+            value={address.city}
             className="px-3.5 py-1.5 border border-gray-300 rounded w-full"
             type="text"
             placeholder="City"
@@ -91,6 +101,8 @@ const PlaceOrder = () => {
           <input
             required
             name="state"
+            onChange={handleInput}
+            value={address.state}
             className="px-3.5 py-1.5 border border-gray-300 rounded w-full"
             type="text"
             placeholder="State"
@@ -100,6 +112,8 @@ const PlaceOrder = () => {
           <input
             required
             name="zipcode"
+            onChange={handleInput}
+            value={address.zipcode}
             className="px-3.5 py-1.5 border border-gray-300 rounded w-full"
             type="number"
             placeholder="Zip Code"
@@ -107,6 +121,8 @@ const PlaceOrder = () => {
           <input
             required
             name="country"
+            onChange={handleInput}
+            value={address.country}
             className="px-3.5 py-1.5 border border-gray-300 rounded w-full"
             type="text"
             placeholder="Country"
@@ -115,6 +131,8 @@ const PlaceOrder = () => {
         <input
           required
           name="phone"
+          onChange={handleInput}
+          value={address.phone}
           className="px-3.5 py-1.5 border border-gray-300 rounded w-full"
           type="number"
           placeholder="Phone"
