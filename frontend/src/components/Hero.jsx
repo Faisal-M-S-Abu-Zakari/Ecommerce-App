@@ -7,14 +7,14 @@ const Hero = () => {
   const { t, isRtl } = useLanguage();
 
   return (
-    <section className="relative h-[90vh] flex items-center overflow-hidden">
+    <section className="relative h-[92vh] flex items-center overflow-hidden">
       <div className="absolute inset-0 z-0">
         <img
-          src={assets.hero_img}
+          src={assets.ecommercelogo}
           alt="Hero Background"
           className="w-full h-full object-cover object-center scale-105"
         />
-        <div className="absolute inset-0 bg-black/30"></div>
+        <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]"></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
@@ -41,7 +41,16 @@ const Hero = () => {
               stroke="currentColor"
               viewBox="0 0 24 24"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isRtl ? "M17 8l4 4m0 0l-4 4m4-4H3" : "M17 8l4 4m0 0l-4 4m4-4H3"} />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d={
+                  isRtl
+                    ? "M17 8l4 4m0 0l-4 4m4-4H3"
+                    : "M17 8l4 4m0 0l-4 4m4-4H3"
+                }
+              />
             </svg>
           </Link>
         </div>

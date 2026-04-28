@@ -21,11 +21,11 @@ const ProductItem = ({ id, image, name, price, rating = 4.5 }) => {
     e.preventDefault();
     if (!token) {
       navigate("/login");
-      toast.error("Please login to add items to cart");
+      toast.error(t.pleaseLogin || "Please login to add items to cart");
       return;
     }
     addToCart(id, selectedSize);
-    toast.success("Added to cart!");
+    toast.success(t.addedToCart || "Added to cart!");
   };
 
   return (

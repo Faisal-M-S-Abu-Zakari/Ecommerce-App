@@ -117,7 +117,7 @@ const Cart = () => {
                     <button
                       onClick={() => {
                         removeFromCart(cartItem.productId, cartItem.size);
-                        toast.success("Item removed from cart");
+                        toast.success(t.itemRemoved);
                       }}
                       className="p-2 hover:bg-gray-100 rounded-full transition-colors"
                     >

@@ -65,7 +65,7 @@ const Login = () => {
           value={password}
           type="password"
           className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-[#BC9355]"
-          placeholder="Password"
+          placeholder={t.password}
           required
         />
 
@@ -76,7 +76,7 @@ const Login = () => {
               onClick={() => setCurrentState("Sign Up")}
               className="text-[#BC9355] font-medium hover:underline"
             >
-              Create account
+              {t.createAccount}
             </button>
           ) : (
             <button
@@ -84,7 +84,7 @@ const Login = () => {
               onClick={() => setCurrentState("Login")}
               className="text-[#BC9355] font-medium hover:underline"
             >
-              Login Here
+              {t.loginHere}
             </button>
           )}
         </div>
@@ -93,7 +93,7 @@ const Login = () => {
           type="submit"
           className="bg-[#BC9355] mt-4 px-10 py-3 rounded-full text-white font-bold w-full hover:bg-[#a67d40] transition-all hover:shadow-lg"
         >
-          {currentState === "Login" ? "Sign In" : "Sign Up"}
+          {currentState === "Login" ? t.signIn : t.signUp}
         </button>
       </form>
     </div>

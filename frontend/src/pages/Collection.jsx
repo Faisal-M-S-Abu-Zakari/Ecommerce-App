@@ -70,7 +70,7 @@ const Collection = () => {
           {/* Filters */}
           <div className="md:w-1/4">
             <div className="flex items-center justify-between mb-4 md:hidden" onClick={() => setShowFilter(!showFilter)}>
-              <span className="font-bold">Filters</span>
+              <span className="font-bold">{t.filters}</span>
               <svg className={`w-5 h-5 transition-transform ${showFilter ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
@@ -78,9 +78,9 @@ const Collection = () => {
 
             <div className={`${showFilter ? "block" : "hidden"} md:block`}>
               <div className="mb-6">
-                <h4 className="font-semibold mb-3">Category</h4>
+                <h4 className="font-semibold mb-3">{t.category}</h4>
                 <div className="flex flex-col gap-2">
-                  {["Men", "Women", "Kids"].map((cat) => (
+                  {[t.men, t.women, t.kids].map((cat) => (
                     <label key={cat} className="flex items-center gap-2 cursor-pointer">
                       <input
                         type="checkbox"
@@ -96,9 +96,9 @@ const Collection = () => {
               </div>
 
               <div className="mb-6">
-                <h4 className="font-semibold mb-3">Type</h4>
+                <h4 className="font-semibold mb-3">{t.type}</h4>
                 <div className="flex flex-col gap-2">
-                  {["Topwear", "Bottomwear", "Winterwear"].map((sub) => (
+                  {[t.topwear, t.bottomwear, t.winterwear].map((sub) => (
                     <label key={sub} className="flex items-center gap-2 cursor-pointer">
                       <input
                         type="checkbox"
@@ -118,15 +118,15 @@ const Collection = () => {
           {/* Products */}
           <div className="md:w-3/4">
             <div className="flex justify-between items-center mb-6">
-              <span className="text-gray-500">{filteredProducts.length} products</span>
+              <span className="text-gray-500">{filteredProducts.length} {t.productsCount}</span>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
                 className="border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-[#BC9355]"
               >
-                <option value="relevant">Sort by: Relevant</option>
-                <option value="low-high">Price: Low to High</option>
-                <option value="high-low">Price: High to Low</option>
+                <option value="relevant">{t.sortBy}: {t.relevant}</option>
+                <option value="low-high">{t.lowHigh}</option>
+                <option value="high-low">{t.highLow}</option>
               </select>
             </div>
 
@@ -145,7 +145,7 @@ const Collection = () => {
 
             {filteredProducts.length === 0 && (
               <div className="py-20 text-center text-gray-500">
-                No products found
+                {t.noProducts}
               </div>
             )}
           </div>

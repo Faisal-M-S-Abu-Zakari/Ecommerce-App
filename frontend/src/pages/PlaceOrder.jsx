@@ -51,7 +51,7 @@ const PlaceOrder = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-10">
           <span className="text-[#BC9355] font-bold text-sm tracking-widest uppercase">
-            Checkout
+            {t.checkout}
           </span>
           <h1 className="text-4xl font-bold text-[#1A1A1A] mt-2">
             {t.placeOrder}
@@ -159,9 +159,9 @@ const PlaceOrder = () => {
               <h2 className="text-xl font-semibold mb-6 text-[#1A1A1A]">{t.paymentMethod}</h2>
               <div className="flex flex-col gap-3">
                 {[
-                  { id: "stripe", label: "Stripe", img: assets.stripe_logo },
-                  { id: "razorpay", label: "Razorpay", img: assets.razorpay_logo },
-                  { id: "cod", label: t.paymentMethod === "طريقة الدفع" ? "الدفع عند الاستلام" : "Cash on Delivery", img: null },
+                  { id: "stripe", label: t.stripe, img: assets.stripe_logo },
+                  { id: "razorpay", label: t.razorpay, img: assets.razorpay_logo },
+                  { id: "cod", label: t.cod, img: null },
                 ].map((m) => (
                   <div
                     key={m.id}

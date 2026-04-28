@@ -46,6 +46,7 @@ export const LanguageProvider = ({ children }) => {
     price: isRtl ? "السعر" : "Price",
     size: isRtl ? "المقاس" : "Size",
     addedToCart: isRtl ? "تمت الإضافة للسلة" : "Added to cart!",
+    pleaseLogin: isRtl ? "يرجى تسجيل الدخول لإضافة منتجات للسلة" : "Please login to add items to cart",
     selectSizeFirst: isRtl ? "يرجى اختيار المقاس" : "Please select a size",
 
     // Cart
@@ -132,6 +133,45 @@ export const LanguageProvider = ({ children }) => {
     // Misc
     loading: isRtl ? "جاري التحميل..." : "Loading...",
     currency: isRtl ? "ر.س" : "SAR",
+
+    // Footer
+    privacy: isRtl ? "الخصوصية" : "Privacy",
+    terms: isRtl ? "الشروط" : "Terms",
+    shipping: isRtl ? "الشحن" : "Shipping",
+    allRights: isRtl ? "جميع الحقوق محفوظة" : "All rights reserved",
+
+    // Policy
+    exchangePolicy: isRtl ? "سياسة الاستبدال السهلة" : "Easy Exchange Policy",
+    exchangeText: isRtl ? "أقدم سياسة استبدال بدون متاعب" : "I offer hassle free exchange policy",
+    returnPolicy: isRtl ? "سياسة الإرجاع خلال 7 أيام" : "7 Days Return Policy",
+    returnText: isRtl ? "أوفر إرجاع مجاني خلال 7 أيام" : "I provide 7 days free return policy",
+    supportPolicy: isRtl ? "دعم العملاء الأفضل" : "Best Customer Support",
+    supportText: isRtl ? "أوفر دعم عملاء على مدار الساعة" : "I provide 24/7 customer support",
+
+    // Related Products
+    relatedProducts: isRtl ? "منتجات ذات صلة" : "RELATED",
+    productsText: isRtl ? "منتجات" : "PRODUCTS",
+
+    // Collection Page
+    filters: isRtl ? "فلاتر" : "Filters",
+    category: isRtl ? "الفئة" : "Category",
+    type: isRtl ? "النوع" : "Type",
+    sortBy: isRtl ? "ترتيب حسب" : "Sort by",
+    relevant: isRtl ? "الأكثر صلة" : "Relevant",
+    lowHigh: isRtl ? "السعر: من الأقل للأعلى" : "Price: Low to High",
+    highLow: isRtl ? "السعر: من الأعلى للأقل" : "Price: High to Low",
+    men: isRtl ? "رجالي" : "Men",
+    women: isRtl ? "نسائي" : "Women",
+    kids: isRtl ? "أطفال" : "Kids",
+    noProducts: isRtl ? "لم يتم العثور على منتجات" : "No products found",
+
+    // Sub-categories
+    topwear: isRtl ? "ملابس علوية" : "Topwear",
+    bottomwear: isRtl ? "ملابس سفلية" : "Bottomwear",
+    winterwear: isRtl ? "ملابس شتوية" : "Winterwear",
+
+    // Products count
+    productsCount: isRtl ? "منتج" : "products",
   };
 
   return (

@@ -2,9 +2,11 @@ import { useContext, useMemo } from "react";
 import ShopContext from "../context/ShopContext";
 import Title from "./Title";
 import ProductItem from "./ProductItem";
+import { useLanguage } from "../context/LanguageContext";
 
 const RelatedProducts = ({ category, subCategory }) => {
   const { products } = useContext(ShopContext);
+  const { t, isRtl } = useLanguage();
 
   const relatedProducts = useMemo(() => {
     if (products.length > 0) {
@@ -22,7 +24,7 @@ const RelatedProducts = ({ category, subCategory }) => {
   return (
     <div className="my-24 px-20">
       <div className="py-2 text-3xl text-center">
-        <Title text1={"RELATED"} text2={"PRODUCTS"} />
+        <Title text1={t.relatedProducts} text2={isRtl ? "منتجات" : "PRODUCTS"} />
       </div>
       <div className="gap-4 gap-y-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
         {relatedProducts.map((item, index) => (

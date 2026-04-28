@@ -46,7 +46,7 @@ const Orders = () => {
               <div key={order._id} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                 <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
                   <div>
-                    <p className="font-semibold text-[#1A1A1A]">Order ID: {order._id.slice(0, 10)}...</p>
+                    <p className="font-semibold text-[#1A1A1A]">{t.orderId}: {order._id.slice(0, 10)}...</p>
                     <p className="text-sm text-gray-500">{formatDate(order.date)}</p>
                   </div>
                   <div className="flex items-center gap-3">
@@ -71,7 +71,7 @@ const Orders = () => {
                           <div className="flex items-center gap-3 mt-1 text-gray-500 text-sm">
                             <span>{currency}{product.price}</span>
                             <span className="bg-gray-100 px-2 py-0.5 rounded">{item.size}</span>
-                            <span>Qty: {item.quantity}</span>
+                            <span>{t.qty}: {item.quantity}</span>
                           </div>
                         </div>
                       </div>
@@ -79,7 +79,7 @@ const Orders = () => {
                   })}
                 </div>
                 <div className="border-t border-gray-100 pt-4 mt-4 flex justify-between items-center">
-                  <span className="text-gray-500">Total</span>
+                  <span className="text-gray-500">{t.orderTotal}</span>
                   <span className="font-bold text-lg text-[#1A1A1A]">{currency}{order.amount}</span>
                 </div>
               </div>
