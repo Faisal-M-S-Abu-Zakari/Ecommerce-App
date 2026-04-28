@@ -18,10 +18,12 @@ const Add = ({ token }) => {
   const [subCategory, setSubCategory] = useState("Topwear");
   const [bestseller, setBestseller] = useState(false);
   const [sizes, setSizes] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const formData = new FormData();
 
       formData.append("name", name);
@@ -59,6 +61,8 @@ const Add = ({ token }) => {
     } catch (error) {
       console.log(error);
       toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -292,8 +296,12 @@ const Add = ({ token }) => {
           </label>
         </div>
 
-        <button type="submit" className="bg-black mt-4 py-3 w-28 text-white">
-          ADD
+        <button
+          type="submit"
+          disabled={loading}
+          className={`bg-black mt-4 py-3 w-28 text-white ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+        >
+          {loading ? "Adding..." : "ADD"}
         </button>
       </form>
     </div>
