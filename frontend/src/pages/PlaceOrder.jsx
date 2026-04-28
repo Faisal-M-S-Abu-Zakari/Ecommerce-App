@@ -22,10 +22,12 @@ const PlaceOrder = () => {
   useEffect(() => {
     if (!token) {
       navigate("/login");
+    } else if (!cartProducts || cartProducts.length === 0) {
+      navigate("/collection");
     }
-  }, [token, navigate]);
+  }, [token, navigate, cartProducts]);
 
-  if (!token) return null;
+  if (!token || !cartProducts || cartProducts.length === 0) return null;
 
   const handleInput = (e) => {
     setAddress({ ...address, [e.target.name]: e.target.value });

@@ -17,6 +17,27 @@ const Cart = () => {
     loading,
   } = useContext(ShopContext);
 
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+  }, [token, navigate]);
+
+  if (!token) return null;
+
+  if (loading) {
+    return (
+      <div className="pt-14 border-t">
+        <div className="mb-3 text-2xl">
+          <Title text1={"YOUR"} text2={"CART"} />
+        </div>
+        <div className="flex items-center justify-center py-20">
+          <p className="text-gray-500">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
   const productMap = useMemo(() => {
     const map = {};
     if (products && Array.isArray(products)) {
@@ -26,12 +47,6 @@ const Cart = () => {
     }
     return map;
   }, [products]);
-
-  useEffect(() => {
-    if (!token) {
-      navigate("/login");
-    }
-  }, [token, navigate]);
 
   if (!token) return null;
 

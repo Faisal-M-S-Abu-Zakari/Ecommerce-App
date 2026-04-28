@@ -5,12 +5,21 @@ import { useNavigate } from "react-router-dom";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
 
+const getStoredCart = () => {
+  try {
+    const stored = localStorage.getItem("cartProducts");
+    return stored ? JSON.parse(stored) : [];
+  } catch {
+    return [];
+  }
+};
+
 const ShopContextProvider = ({ children }) => {
   const currency = "$";
   const delivery_fee = 10;
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
-  const [cartProducts, setCartProducts] = useState([]);
+  const [cartProducts, setCartProducts] = useState(getStoredCart);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [orders, setOrders] = useState([]);
@@ -80,6 +89,10 @@ const ShopContextProvider = ({ children }) => {
       localStorage.removeItem("token");
     }
   }, [token]);
+
+  useEffect(() => {
+    localStorage.setItem("cartProducts", JSON.stringify(cartProducts));
+  }, [cartProducts]);
 
   // Load cart after products are loaded on initial page load
   useEffect(() => {
