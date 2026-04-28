@@ -138,20 +138,15 @@ const getAdminProfile = async (req, res) => {
 // Route for uploading admin avatar
 const uploadAdminAvatar = async (req, res) => {
   try {
-    const avatar = req.body.avatar;
-    console.log("Avatar upload - user:", req.user._id);
-    console.log("Avatar upload - has avatar:", !!avatar);
+    const avatar = req.file;
     if (!avatar) {
       return res.json({ success: false, message: "No image provided" });
     }
-    const uploadedImage = await cloudinary.uploader.upload(avatar, {
+    const uploadedImage = await cloudinary.uploader.upload(avatar.path, {
       folder: "admin_avatars",
       transformation: [{ width: 200, height: 200, crop: "fill" }],
     });
-    console.log("Cloudinary upload success:", uploadedImage.secure_url);
-    await userModel.findByIdAndUpdate(req.user._id, {
-      avatar: uploadedImage.secure_url,
-    });
+    await userModel.findByIdAndUpdate(req.user._id, { avatar: uploadedImage.secure_url });
     res.json({ success: true, avatar: uploadedImage.secure_url });
   } catch (error) {
     console.log("Avatar upload error:", error);
