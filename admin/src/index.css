@@ -4,18 +4,116 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --bg-primary: #FDFCFB;
+  --bg-secondary: #F8F5F1;
+  --text-primary: #1A1A1A;
+  --text-secondary: #6B6B6B;
+  --accent: #BC9355;
+  --accent-hover: #A67D42;
+}
+
 *{
-    font-family: outfit;
+    font-family: 'Outfit', sans-serif;
 }
 
-select,input,textarea{
-    border: 1px solid #c2c2c2;
-    outline-color: #C586A5;
-    border-radius: 4px;
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }
 
+/* --- Modern Form Styles --- */
+select, input, textarea {
+    border: 1px solid #e5e7eb;
+    outline: none;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    background-color: #f9fafb;
+}
 
-.active{
-    background-color: #ffebf5;
-    border-color: #C586A5;
+select:focus, input:focus, textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(188, 147, 85, 0.15);
+    background-color: white;
+}
+
+select:hover, input:hover, textarea:hover {
+    border-color: var(--accent);
+}
+
+/* --- Animations --- */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* --- Card Styles --- */
+.card-luxury {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(26, 26, 26, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.card-luxury:hover {
+  box-shadow: 0 8px 32px rgba(26, 26, 26, 0.1);
+  transform: translateY(-2px);
+}
+
+/* --- Button Styles --- */
+.btn-primary {
+  background: var(--accent);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(188, 147, 85, 0.3);
+}
+
+/* --- Scrollbar --- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
 }

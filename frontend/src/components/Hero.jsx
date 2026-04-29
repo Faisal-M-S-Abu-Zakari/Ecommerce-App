@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { assets } from "../assets/assets";
 import { Link } from "react-router-dom";
 import { useLanguage } from "../context/LanguageContext";
 
 const Hero = () => {
   const { t, isRtl } = useLanguage();
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => setIsLoaded(true), 100);
+  }, []);
 
   return (
     <section className="relative h-[92vh] flex items-center overflow-hidden">
@@ -18,25 +23,26 @@ const Hero = () => {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="max-w-2xl text-white">
-          <div className="flex items-center gap-2 mb-4">
-            <span className="bg-[#BC9355] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest">
+        <div className={`max-w-2xl text-white transition-all duration-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className={`flex items-center gap-2 mb-4 transition-all duration-700 delay-200 ${isLoaded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
+            <span className="bg-[#BC9355] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest animate-pulse-glow">
               {t.newArrivals}
             </span>
           </div>
-          <h2 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+          <h2 className={`text-5xl md:text-7xl font-bold mb-6 leading-tight transition-all duration-700 delay-300 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             {t.heroTitle}
           </h2>
-          <p className="text-lg md:text-xl mb-8 text-gray-100 font-light max-w-lg">
+          <p className={`text-lg md:text-xl mb-8 text-gray-100 font-light max-w-lg transition-all duration-700 delay-500 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             {t.heroSub}
           </p>
-          <Link
-            to="/collection"
-            className="bg-[#BC9355] text-white px-10 py-4 rounded-full font-bold inline-flex items-center gap-3 group hover:bg-[#a67d40] transition-all"
-          >
-            <span>{t.shopNow}</span>
+          <div className={`transition-all duration-700 delay-700 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <Link
+              to="/collection"
+              className="btn-luxury px-10 py-4 rounded-full font-bold inline-flex items-center gap-3 group"
+            >
+              <span>{t.shopNow}</span>
             <svg
-              className={`w-5 h-5 transition-transform ${isRtl ? "group-hover:-translate-x-2" : "group-hover:translate-x-2"}`}
+              className={`w-5 h-5 transition-transform duration-300 ${isRtl ? "group-hover:-translate-x-2" : "group-hover:translate-x-2"}`}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -52,7 +58,8 @@ const Hero = () => {
                 }
               />
             </svg>
-          </Link>
+            </Link>
+          </div>
         </div>
       </div>
     </section>

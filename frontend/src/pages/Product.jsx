@@ -16,6 +16,7 @@ const Product = () => {
   const [newComment, setNewComment] = useState("");
   const [newRating, setNewRating] = useState(5);
   const [activeTab, setActiveTab] = useState("description");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -23,6 +24,7 @@ const Product = () => {
 
   const fetchComments = async () => {
     try {
+      setLoadingComments(true);
       const res = await fetch(import.meta.env.VITE_API_URL + "/api/comment/product", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -43,39 +45,58 @@ const Product = () => {
 
   const handleAddComment = async () => {
     if (!token) {
-      toast.error(t.pleaseLoginReview);
+      toast.error(t.pleaseLoginReview || "Please login to add a review");
       navigate("/login");
       return;
     }
     if (!newComment.trim()) {
-      toast.error(t.writeComment);
+      toast.error(t.writeComment || "Please write a comment");
       return;
     }
+    if (isSubmitting) return;
+
     try {
+      setIsSubmitting(true);
       const userId = getUserId();
+      
+      console.log("Submitting comment with:", {
+        productId,
+        userId,
+        userName: user?.name || "Anonymous",
+        rating: newRating,
+        commentLength: newComment.length
+      });
+      
       const res = await fetch(import.meta.env.VITE_API_URL + "/api/comment/add", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
           productId,
-          userId: userId,
+          userId: userId || "anonymous_test",
           userName: user?.name || "Anonymous",
           rating: newRating,
           comment: newComment,
         }),
       });
+      
       const data = await res.json();
+      console.log("Comment response:", data);
+      
       if (data.success) {
         setNewComment("");
         setNewRating(5);
         fetchComments();
-        toast.success(t.commentAdded);
+        toast.success(t.commentAdded || "Review added successfully!");
       } else {
-        toast.error(data.message || t.commentFailed);
+        toast.error(data.message || "Failed to add review");
       }
     } catch (err) {
-      console.error(err);
-      toast.error(t.commentFailed);
+      console.error("Comment error:", err);
+      toast.error("Failed to add review. Please make sure you are logged in.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -89,12 +110,15 @@ const Product = () => {
 
   const [image, setImage] = useState(null);
 
+  // Reset image when productId changes
+  useEffect(() => {
+    if (productData?.images?.length > 0) {
+      setImage(productData.images[0]);
+    }
+  }, [productId, productData]);
+
   if (!productData) {
     return <div className="opacity-0"></div>;
-  }
-
-  if (!image && productData.images?.length > 0) {
-    setImage(productData.images[0]);
   }
 
   if (!productData.images || productData.images.length === 0) {
@@ -186,77 +210,146 @@ const Product = () => {
         </div>
       </div>
       {/*  Description and review section */}
-      <div className="mt-20">
-        <div className="flex">
+      <div className="mt-24 px-20">
+        {/* Tab Buttons */}
+        <div className="flex border-b border-gray-200">
           <button
             onClick={() => setActiveTab("description")}
-            className={`px-5 py-3 border text-sm ${activeTab === "description" ? "bg-black text-white" : ""}`}
+            className={`px-8 py-4 text-sm font-semibold transition-all relative ${
+              activeTab === "description" 
+                ? "text-[#BC9355]" 
+                : "text-gray-500 hover:text-gray-700"
+            }`}
           >
             {t.description}
+            {activeTab === "description" && (
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#BC9355]"></span>
+            )}
           </button>
           <button
             onClick={() => setActiveTab("reviews")}
-            className={`px-5 py-3 border text-sm ${activeTab === "reviews" ? "bg-black text-white" : ""}`}
+            className={`px-8 py-4 text-sm font-semibold transition-all relative ${
+              activeTab === "reviews" 
+                ? "text-[#BC9355]" 
+                : "text-gray-500 hover:text-gray-700"
+            }`}
           >
-            {t.reviews} ({comments.length}) {averageRating > 0 && `★ ${averageRating}`}
+            {t.reviews} ({comments.length})
+            {averageRating > 0 && (
+              <span className="ml-2 text-yellow-500">★ {averageRating}</span>
+            )}
+            {activeTab === "reviews" && (
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#BC9355]"></span>
+            )}
           </button>
         </div>
-        <div className="border p-6">
+        
+        {/* Tab Content */}
+        <div className="py-8">
           {activeTab === "description" ? (
-            <div className="flex flex-col gap-4 text-gray-500 text-sm">
-              <p>{productData.description || t.noDescription}</p>
+            <div className="max-w-3xl">
+              <p className="text-gray-600 leading-relaxed text-sm">
+                {productData.description || t.noDescription}
+              </p>
             </div>
           ) : (
-            <div className="flex flex-col gap-6">
+            <div className="max-w-3xl">
               {/* Add Comment Form */}
-              {token && (
-                <div className="flex flex-col gap-3 p-4 bg-gray-50 rounded">
-                  <h3 className="font-medium">{t.addReview}</h3>
-                  <div className="flex items-center gap-2">
-                    <span>{t.rating}:</span>
-                    <select
-                      value={newRating}
-                      onChange={(e) => setNewRating(Number(e.target.value))}
-                      className="border p-1"
-                    >
-                      {[1, 2, 3, 4, 5].map((r) => (
-                        <option key={r} value={r}>{r} ★</option>
-                      ))}
-                    </select>
+              {token ? (
+                <div className="mb-10 p-6 bg-gray-50 rounded-2xl border border-gray-100">
+                  <h3 className="font-semibold text-lg text-[#1A1A1A] mb-4">{t.addReview}</h3>
+                  <div className="flex flex-col sm:flex-row gap-4 mb-4">
+                    <div className="flex items-center gap-3">
+                      <span className="text-sm text-gray-600">{t.rating}:</span>
+                      <div className="flex gap-1">
+                        {[1, 2, 3, 4, 5].map((r) => (
+                          <button
+                            key={r}
+                            onClick={() => setNewRating(r)}
+                            className="text-2xl transition-transform hover:scale-110"
+                          >
+                            <span className={newRating >= r ? "text-yellow-400" : "text-gray-300"}>
+                              ★
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                   <textarea
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
-                    placeholder={t.writeReview}
-                    className="border p-2 w-full h-20"
+                    placeholder={t.writeReview || "Write your review..."}
+                    className="w-full p-4 bg-white border border-gray-200 rounded-xl focus:outline-none focus:border-[#BC9355] focus:ring-2 focus:ring-[#BC9355]/20 transition-all text-sm resize-none h-28"
                   />
                   <button
                     onClick={handleAddComment}
-                    className="bg-black text-white px-4 py-2 self-start"
+                    disabled={isSubmitting}
+                    className={`mt-4 px-6 py-3 rounded-xl font-semibold text-sm transition-all ${
+                      isSubmitting
+                        ? "bg-gray-400 text-white cursor-not-allowed"
+                        : "bg-[#BC9355] hover:bg-[#A67D42] text-white hover:shadow-lg hover:-translate-y-0.5"
+                    }`}
                   >
-                    {t.submitReview}
+                    {isSubmitting ? "Submitting..." : (t.submitReview || "Submit Review")}
+                  </button>
+                </div>
+              ) : (
+                <div className="mb-8 p-6 bg-[#BC9355]/5 rounded-2xl border border-[#BC9355]/20 text-center">
+                  <p className="text-gray-600 mb-3">
+                    Please login to write a review
+                  </p>
+                  <button
+                    onClick={() => navigate("/login")}
+                    className="px-6 py-2 bg-[#BC9355] text-white rounded-full font-medium text-sm hover:bg-[#A67D42] transition-all"
+                  >
+                    Login
                   </button>
                 </div>
               )}
 
               {/* Comments List */}
               {loadingComments ? (
-                <p className="text-gray-500">{t.loadingReviews}</p>
+                <div className="py-8 flex justify-center">
+                  <div className="w-8 h-8 border-4 border-[#BC9355]/30 border-t-[#BC9355] rounded-full animate-spin"></div>
+                </div>
               ) : comments.length === 0 ? (
-                <p className="text-gray-500">{t.noReviews}</p>
+                <div className="py-12 text-center">
+                  <svg className="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                  </svg>
+                  <p className="text-gray-500">{t.noReviews || "No reviews yet. Be the first to review!"}</p>
+                </div>
               ) : (
-                comments.map((comment, index) => (
-                  <div key={index} className="border-b pb-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="font-medium">{comment.userName}</span>
-                      <span className="text-yellow-500">{"★".repeat(comment.rating || 5)}</span>
-                      <span className="text-gray-400 text-xs">
-                        {comment.date ? new Date(comment.date).toLocaleDateString() : ""}
-                      </span>
+                <div className="space-y-6">
+                  {comments.map((comment, index) => (
+                    <div key={index} className="p-6 bg-white rounded-2xl border border-gray-100 shadow-soft hover:shadow-luxury transition-shadow duration-300">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 bg-[#BC9355]/10 rounded-full flex items-center justify-center">
+                            <span className="text-[#BC9355] font-bold">
+                              {(comment.userName || "A").charAt(0).toUpperCase()}
+                            </span>
+                          </div>
+                          <div>
+                            <span className="font-semibold text-[#1A1A1A]">{comment.userName || "Anonymous"}</span>
+                            <div className="flex items-center gap-1 mt-0.5">
+                              {[...Array(5)].map((_, i) => (
+                                <span key={i} className={i < (comment.rating || 5) ? "text-yellow-400" : "text-gray-300"}>
+                                  ★
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                        <span className="text-gray-400 text-xs">
+                          {comment.date ? new Date(comment.date).toLocaleDateString() : ""}
+                        </span>
+                      </div>
+                      <p className="text-gray-600 leading-relaxed">{comment.comment}</p>
                     </div>
-                    <p className="text-gray-600">{comment.comment}</p>
-                  </div>
-                ))
+                  ))}
+                </div>
               )}
             </div>
           )}

@@ -1,4 +1,5 @@
 import commentModel from "../models/commentModel.js";
+import productModel from "../models/productModel.js";
 
 const addComment = async (req, res) => {
   try {
@@ -38,6 +39,34 @@ const getAllComments = async (req, res) => {
   }
 };
 
+// Get all comments with product info for admin panel
+const getAllCommentsForAdmin = async (req, res) => {
+  try {
+    const comments = await commentModel.find({}).sort({ date: -1 });
+    
+    // For each comment, get product info
+    const commentsWithProduct = await Promise.all(
+      comments.map(async (comment) => {
+        const product = await productModel.findById(comment.productId);
+        return {
+          reviewId: comment._id,
+          productId: comment.productId,
+          productName: product?.name || "Product not found",
+          name: comment.userName,
+          rating: comment.rating,
+          comment: comment.comment,
+          createdAt: comment.date,
+        };
+      })
+    );
+    
+    res.json({ success: true, comments: commentsWithProduct });
+  } catch (error) {
+    console.error(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
 const deleteComment = async (req, res) => {
   try {
     const { commentId } = req.params;
@@ -48,4 +77,4 @@ const deleteComment = async (req, res) => {
   }
 };
 
-export { addComment, getProductComments, getAllComments, deleteComment };
+export { addComment, getProductComments, getAllComments, getAllCommentsForAdmin, deleteComment };

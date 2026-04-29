@@ -176,6 +176,20 @@ const updateCart = async (req, res) => {
   }
 };
 
+// Get user profile
+const getUserProfile = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const user = await userModel.findById(userId).select("-password");
+    if (!user) {
+      return res.json({ success: false, message: "User not found" });
+    }
+    res.json({ success: true, user: { name: user.name, email: user.email } });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
 export {
   loginUser,
   registerUser,
@@ -184,4 +198,5 @@ export {
   updateCart,
   getAdminProfile,
   uploadAdminAvatar,
+  getUserProfile,
 };

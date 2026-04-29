@@ -7,16 +7,24 @@ import { useLanguage } from "../context/LanguageContext";
 const NavBar = () => {
   const [visible, setVisible] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { setShowSearch, CartCount, token, logout } = useContext(ShopContext);
   const { isRtl, toggleLanguage, t } = useLanguage();
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    setVisible(false);
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
 
   const handleSearchClick = () => {
     if (!pathname.startsWith("/collection")) {
@@ -27,15 +35,18 @@ const NavBar = () => {
 
   return (
     <nav
-      className={`fixed w-full z-50 transition-all duration-300 ${
+      className={`fixed w-full z-50 transition-all duration-500 ease-out ${
         isScrolled
-          ? "bg-white/90 backdrop-blur-md shadow-sm py-3"
+          ? "bg-white/90 backdrop-blur-xl shadow-lg py-2 border-b border-gray-100/50"
           : "bg-transparent py-5"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
-          <button className="md:hidden p-2" onClick={() => setVisible(true)}>
+          <button 
+            className="md:hidden p-2 hover:bg-gray-100 rounded-full transition-all" 
+            onClick={() => setVisible(true)}
+          >
             <svg
               className="w-6 h-6 text-[#1A1A1A]"
               fill="none"
@@ -52,8 +63,8 @@ const NavBar = () => {
           </button>
 
           <div className="flex-1 flex justify-center md:justify-start">
-            <Link to={"/"} className="shrink-0">
-              <h1 className="text-2xl font-bold tracking-tighter text-[#1A1A1A]">
+            <Link to={"/"} className="shrink-0 group">
+              <h1 className="text-2xl font-bold tracking-tighter text-[#1A1A1A] transition-transform duration-300 group-hover:scale-105">
                 FAISAL<span className="text-[#BC9355]">.</span>
               </h1>
             </Link>
@@ -63,95 +74,120 @@ const NavBar = () => {
             <NavLink
               to="/"
               className={({ isActive }) =>
-                `text-sm font-medium transition-colors ${
+                `relative text-sm font-medium transition-colors py-2 ${
                   isActive
                     ? "text-[#BC9355]"
                     : "text-gray-500 hover:text-[#BC9355]"
                 }`
               }
             >
-              {t.home}
+              {({ isActive }) => (
+                <>
+                  {t.home}
+                  <span className={`absolute bottom-0 left-0 h-0.5 bg-[#BC9355] transition-all duration-300 ${isActive ? 'w-full' : 'w-0'}`}></span>
+                </>
+              )}
             </NavLink>
             <NavLink
               to="/collection"
               className={({ isActive }) =>
-                `text-sm font-medium transition-colors ${
+                `relative text-sm font-medium transition-colors py-2 ${
                   isActive
                     ? "text-[#BC9355]"
                     : "text-gray-500 hover:text-[#BC9355]"
                 }`
               }
             >
-              {t.collection}
+              {({ isActive }) => (
+                <>
+                  {t.collection}
+                  <span className={`absolute bottom-0 left-0 h-0.5 bg-[#BC9355] transition-all duration-300 ${isActive ? 'w-full' : 'w-0'}`}></span>
+                </>
+              )}
             </NavLink>
             <NavLink
               to="/bestseller"
               className={({ isActive }) =>
-                `text-sm font-medium transition-colors ${
+                `relative text-sm font-medium transition-colors py-2 ${
                   isActive
                     ? "text-[#BC9355]"
                     : "text-gray-500 hover:text-[#BC9355]"
                 }`
               }
             >
-              {t.bestSeller}
+              {({ isActive }) => (
+                <>
+                  {t.bestSeller}
+                  <span className={`absolute bottom-0 left-0 h-0.5 bg-[#BC9355] transition-all duration-300 ${isActive ? 'w-full' : 'w-0'}`}></span>
+                </>
+              )}
             </NavLink>
             <NavLink
               to="/about"
               className={({ isActive }) =>
-                `text-sm font-medium transition-colors ${
+                `relative text-sm font-medium transition-colors py-2 ${
                   isActive
                     ? "text-[#BC9355]"
                     : "text-gray-500 hover:text-[#BC9355]"
                 }`
               }
             >
-              {t.about}
+              {({ isActive }) => (
+                <>
+                  {t.about}
+                  <span className={`absolute bottom-0 left-0 h-0.5 bg-[#BC9355] transition-all duration-300 ${isActive ? 'w-full' : 'w-0'}`}></span>
+                </>
+              )}
             </NavLink>
             <NavLink
               to="/contact"
               className={({ isActive }) =>
-                `text-sm font-medium transition-colors ${
+                `relative text-sm font-medium transition-colors py-2 ${
                   isActive
                     ? "text-[#BC9355]"
                     : "text-gray-500 hover:text-[#BC9355]"
                 }`
               }
             >
-              {t.contact}
+              {({ isActive }) => (
+                <>
+                  {t.contact}
+                  <span className={`absolute bottom-0 left-0 h-0.5 bg-[#BC9355] transition-all duration-300 ${isActive ? 'w-full' : 'w-0'}`}></span>
+                </>
+              )}
             </NavLink>
           </div>
 
-          <div className="flex-1 flex justify-end items-center gap-4">
+          <div className="flex-1 flex justify-end items-center gap-2 sm:gap-4">
             <button
               onClick={toggleLanguage}
-              className="text-xs font-bold border border-[#1A1A1A] px-2 py-1 rounded hover:bg-[#1A1A1A] hover:text-white transition-all"
+              className="text-xs font-bold border border-[#1A1A1A] px-2 py-1.5 rounded hover:bg-[#1A1A1A] hover:text-white transition-all cursor-pointer"
             >
               {isRtl ? "EN" : "عربي"}
             </button>
             <button
               onClick={handleSearchClick}
-              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+              className="p-2 hover:bg-gray-100 rounded-full transition-all hover:scale-110"
             >
               <img src={assets.search_icon} className="w-5 h-5" alt="" />
             </button>
 
             {token ? (
               <div className="relative group">
-                <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+                <button className="p-2 hover:bg-gray-100 rounded-full transition-all hover:scale-110">
                   <img src={assets.profile_icon} className="w-5 h-5" alt="" />
                 </button>
                 <div className="hidden group-hover:block absolute end-0 top-full pt-4 z-50">
-                  <div className="bg-white rounded-lg shadow-lg border border-gray-100 py-2 w-40">
+                  <div className="bg-white rounded-xl shadow-xl border border-gray-100 py-2 w-44 overflow-hidden">
                     <button
                       onClick={() => navigate("/orders")}
-                      className="block w-full text-start px-4 py-2 text-sm text-gray-600 hover:bg-gray-50"
+                      className="block w-full text-start px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-[#BC9355] transition-colors"
                     >
                       {t.orders}
                     </button>
                     <button
                       onClick={logout}
-                      className="block w-full text-start px-4 py-2 text-sm text-gray-600 hover:bg-gray-50"
+                      className="block w-full text-start px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-red-500 transition-colors"
                     >
                       {t.logout}
                     </button>
@@ -161,7 +197,7 @@ const NavBar = () => {
             ) : (
               <Link
                 to={"/login"}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                className="p-2 hover:bg-gray-100 rounded-full transition-all hover:scale-110"
               >
                 <img src={assets.profile_icon} className="w-5 h-5" alt="" />
               </Link>
@@ -169,11 +205,11 @@ const NavBar = () => {
 
             <Link
               to="/cart"
-              className="relative p-2 hover:bg-gray-100 rounded-full transition-colors"
+              className="relative p-2 hover:bg-gray-100 rounded-full transition-all hover:scale-110"
             >
               <img src={assets.cart_icon} className="w-5 h-5" alt="" />
               {CartCount > 0 && (
-                <span className="absolute top-0 end-0 bg-[#BC9355] text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
+                <span className="absolute top-0 end-0 bg-[#BC9355] text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold animate-pulse">
                   {CartCount}
                 </span>
               )}
@@ -184,18 +220,21 @@ const NavBar = () => {
 
       {visible && (
         <div
-          className="fixed inset-0 z-100 bg-black/60 backdrop-blur-sm md:hidden"
+          className={`fixed inset-0 z-100 bg-black/60 backdrop-blur-sm md:hidden transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-100' : 'opacity-0'}`}
           onClick={() => setVisible(false)}
         >
           <div
-            className={`absolute top-0 bottom-0 w-[80%] bg-white p-10 ${
+            className={`absolute top-0 bottom-0 w-[85%] bg-white p-8 shadow-2xl transition-transform duration-300 ${
               isRtl ? "start-0" : "end-0"
-            }`}
+            } ${isMobileMenuOpen ? 'translate-x-0' : (isRtl ? '-translate-x-full' : 'translate-x-full')}`}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-center mb-10">
-              <span className="text-xl font-bold">Menu</span>
-              <button onClick={() => setVisible(false)}>
+              <span className="text-xl font-bold text-[#1A1A1A]">Menu</span>
+              <button 
+                onClick={() => setVisible(false)}
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+              >
                 <svg
                   className="w-6 h-6"
                   fill="none"
@@ -211,39 +250,39 @@ const NavBar = () => {
                 </svg>
               </button>
             </div>
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-4">
               <Link
                 to="/"
                 onClick={() => setVisible(false)}
-                className="text-2xl font-bold hover:text-[#BC9355]"
+                className="text-xl font-semibold text-[#1A1A1A] hover:text-[#BC9355] transition-colors py-2 border-b border-gray-100"
               >
                 {t.home}
               </Link>
               <Link
                 to="/collection"
                 onClick={() => setVisible(false)}
-                className="text-2xl font-bold hover:text-[#BC9355]"
+                className="text-xl font-semibold text-[#1A1A1A] hover:text-[#BC9355] transition-colors py-2 border-b border-gray-100"
               >
                 {t.collection}
               </Link>
               <Link
                 to="/bestseller"
                 onClick={() => setVisible(false)}
-                className="text-2xl font-bold hover:text-[#BC9355]"
+                className="text-xl font-semibold text-[#1A1A1A] hover:text-[#BC9355] transition-colors py-2 border-b border-gray-100"
               >
                 {t.bestSeller}
               </Link>
               <Link
                 to="/about"
                 onClick={() => setVisible(false)}
-                className="text-2xl font-bold hover:text-[#BC9355]"
+                className="text-xl font-semibold text-[#1A1A1A] hover:text-[#BC9355] transition-colors py-2 border-b border-gray-100"
               >
                 {t.about}
               </Link>
               <Link
                 to="/contact"
                 onClick={() => setVisible(false)}
-                className="text-2xl font-bold hover:text-[#BC9355]"
+                className="text-xl font-semibold text-[#1A1A1A] hover:text-[#BC9355] transition-colors py-2 border-b border-gray-100"
               >
                 {t.contact}
               </Link>

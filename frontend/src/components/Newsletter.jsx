@@ -1,18 +1,61 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import { useLanguage } from "../context/LanguageContext";
+import emailjs from "@emailjs/browser";
 
 const NewsletterBox = () => {
   const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const { t, isRtl } = useLanguage();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (email) {
+    
+    if (!email || !email.includes("@")) {
+      toast.error(isRtl ? "الرجاء إدخال بريد إلكتروني صحيح" : "Please enter a valid email");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      console.log("EmailJS Config:", {
+        serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY ? "exists" : "missing"
+      });
+
+      const templateParams = {
+        to_email: email,
+        to_name: email.split("@")[0],
+      };
+
+      const result = await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        templateParams,
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      );
+
+      console.log("EmailJS Success:", result);
       toast.success(
         isRtl ? "شكراً لك! تم اشتراكك بنجاح" : "Thank you for subscribing!",
       );
       setEmail("");
+    } catch (error) {
+      console.error("EmailJS Error:", error);
+      
+      let errorMessage = isRtl ? "حدث خطأ. حاول مرة أخرى لاحقاً" : "Something went wrong";
+      
+      if (error.text) {
+        errorMessage = error.text;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
+      toast.error(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -36,13 +79,15 @@ const NewsletterBox = () => {
             placeholder={isRtl ? "بريدك الإلكتروني" : "Your Email Address"}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="flex-1 px-8 py-4 outline-none text-black"
+            disabled={isLoading}
+            className="flex-1 px-8 py-4 outline-none text-black disabled:opacity-50"
           />
           <button
             type="submit"
-            className="bg-black text-white px-10 py-4 rounded-3xl font-black text-xs uppercase tracking-widest hover:bg-[#BC9355] transition-all"
+            disabled={isLoading}
+            className="bg-black text-white px-10 py-4 rounded-3xl font-black text-xs uppercase tracking-widest hover:bg-[#BC9355] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isRtl ? "اشترك الآن" : "Subscribe"}
+            {isLoading ? "..." : (isRtl ? "اشترك الآن" : "Subscribe")}
           </button>
         </form>
       </div>
@@ -51,8 +96,3 @@ const NewsletterBox = () => {
 };
 
 export default NewsletterBox;
-
-// <div class="flex flex-col md:flex-row gap-4 bg-white p-3 rounded-[2rem] shadow-sm max-w-2xl mx-auto">
-//     <input type="email" placeholder="بريدك الإلكتروني" class="flex-1 px-8 py-4 outline-none text-black">
-//     <button class="bg-black text-white px-10 py-4 rounded-[1.5rem] font-black text-xs uppercase tracking-widest hover:bg-[#BC9355] transition-all">اشترك الآن</button>
-// </div>

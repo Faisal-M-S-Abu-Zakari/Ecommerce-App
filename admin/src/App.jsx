@@ -32,18 +32,19 @@ const App = () => {
       ) : (
         <>
           <Navbar setToken={setToken} />
-          <hr />
           <div className="flex w-full">
             <Sidebar />
-            <div className="mx-auto my-8 ml-[max(5vw,25px)] w-[70%] text-gray-600 text-base">
-              <Routes>
-                <Route path="/" element={<Dashboard token={token} />} />
+            <div className="flex-1 p-8 sm:p-10 ml-0 bg-gray-50/50">
+              <div className="max-w-5xl mx-auto">
+                <Routes>
+                  <Route path="/" element={<Dashboard token={token} />} />
                 <Route path="/add" element={<Add token={token} />} />
                 <Route path="/edit/:id" element={<Edit token={token} />} />
                 <Route path="/list" element={<List token={token} />} />
                 <Route path="/orders" element={<Orders token={token} />} />
                 <Route path="/comments" element={<Comments token={token} />} />
               </Routes>
+              </div>
             </div>
           </div>
         </>

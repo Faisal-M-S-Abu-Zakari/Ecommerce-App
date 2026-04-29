@@ -82,9 +82,29 @@ const ShopContextProvider = ({ children }) => {
     }
   };
 
+  // Load user profile on app load
+  const loadUserProfile = async () => {
+    if (!token) return;
+    try {
+      const response = await fetch(`${API_URL}/api/user/profile`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      if (data.success && data.user) {
+        setUser(data.user);
+      }
+    } catch (error) {
+      console.error("Failed to load user profile:", error);
+    }
+  };
+
   useEffect(() => {
     if (token) {
       localStorage.setItem("token", token);
+      loadUserProfile();
     } else {
       localStorage.removeItem("token");
     }
@@ -111,7 +131,7 @@ const ShopContextProvider = ({ children }) => {
       const data = await response.json();
       if (data.token) {
         setToken(data.token);
-        setUser({ email });
+        setUser(data.user || { email });
         getUserOrders();
         toast.success("Logged in successfully");
         return true;
@@ -368,6 +388,7 @@ const ShopContextProvider = ({ children }) => {
     orders,
     placeOrder,
     getUserOrders,
+    getUserId,
   };
 
   return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>;
