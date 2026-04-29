@@ -1,13 +1,11 @@
 import React, { useContext, useState } from "react";
 import ShopContext from "../context/ShopContext";
-import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 import { useLanguage } from "../context/LanguageContext";
 
 const ProductItem = ({ id, image, name, price, rating = 4.5 }) => {
-  const { currency, addToCart, token } = useContext(ShopContext);
+  const { currency, addToCart } = useContext(ShopContext);
   const { t } = useLanguage();
-  const navigate = useNavigate();
   const [selectedSize] = useState("M");
 
   const imageUrl =
@@ -19,13 +17,7 @@ const ProductItem = ({ id, image, name, price, rating = 4.5 }) => {
 
   const handleAddToCart = (e) => {
     e.preventDefault();
-    if (!token) {
-      navigate("/login");
-      toast.error(t.pleaseLogin || "Please login to add items to cart");
-      return;
-    }
     addToCart(id, selectedSize);
-    toast.success(t.addedToCart || "Added to cart!");
   };
 
   return (

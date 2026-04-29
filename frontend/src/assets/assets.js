@@ -74,7 +74,32 @@ import stripe_logo from "./stripe_logo.png";
 import cross_icon from "./cross_icon.png";
 import ecommerceHero from "./ecommerceHero.jpg";
 import ecommercelogo from "./ecommercelogo.avif";
+import men from "./men.jpg";
+import kids from "./kids.jpg";
+import yaso from "./yaso.webp";
+import accessories from "./Accessories.jpg";
 
+import Accessories from "./Accessories.jpg";
+import perfume from "./perfume.jpg";
+import Shoes from "./Shoes.jpg";
+import Accessories1 from "./Accessories1.jpg";
+import Accessories2 from "./Accessories2.jpg";
+import shoesSandals from "./shoesSandals.webp";
+import shoesStrappy from "./shoesStrappy.avif";
+import shoesChelsea from "./shoesChelsea.avif";
+import shoesBlack from "./shoesBlack.avif";
+import shoesWhite from "./shoesWhite.avif";
+import shoesBrown from "./shoesBrown.avif";
+import Perfume from "./Perfume.avif";
+import PerfumeCitrus from "./PerfumeCitrus.avif";
+import PerfumeFlower from "./PerfumeFlower.avif";
+import PerfumeRose from "./PerfumeRose.webp";
+import PerfumeSpice from "./PerfumeSpice.avif";
+import PerfumeVanilla from "./PerfumeVanilla.avif";
+import Scarves from "./Scarves.avif";
+import Sunglasses from "./Sunglasses.avif";
+import Watches from "./Watches.avif";
+import Gloves from " ./Gloves.avif";
 export const assets = {
   logo,
   hero_img,
@@ -96,6 +121,12 @@ export const assets = {
   cross_icon,
   ecommerceHero,
   ecommercelogo,
+  men,
+  kids,
+  yaso,
+  accessories,
+  perfume,
+  Shoes,
 };
 
 export const products = [
@@ -773,6 +804,238 @@ export const products = [
     subCategory: "Winterwear",
     sizes: ["S", "M", "L", "XL"],
     date: 1716668445448,
+    bestseller: false,
+  },
+  // Accessories
+  {
+    _id: "acces01",
+    name: "Leather Belt - Classic Black",
+    description:
+      "Genuine leather belt with classic silver buckle. Perfect for formal and casual wear.",
+    price: 150,
+    image: [Accessories1],
+    category: "Accessories",
+    subCategory: "Belts",
+    sizes: ["S", "M", "L", "XL"],
+    date: 1716670000000,
+    bestseller: true,
+  },
+  {
+    _id: "acces02",
+    name: "Leather Wallet - Brown",
+    description:
+      "Premium leather wallet with multiple card slots and coin pocket.",
+    price: 200,
+    image: [Accessories2],
+    category: "Accessories",
+    subCategory: "Wallets",
+    sizes: ["One Size"],
+    date: 1716671000000,
+    bestseller: true,
+  },
+  {
+    _id: "acces03",
+    name: "Aviator Sunglasses",
+    description: "Classic aviator style sunglasses with UV400 protection.",
+    price: 350,
+    image: [Sunglasses],
+    category: "Accessories",
+    subCategory: "Sunglasses",
+    sizes: ["One Size"],
+    date: 1716672000000,
+    bestseller: false,
+  },
+  {
+    _id: "acces04",
+    name: "Silk Scarf - Floral Print",
+    description:
+      "100% pure silk scarf with beautiful floral print. Perfect for elegant occasions.",
+    price: 280,
+    image: [Scarves],
+    category: "Accessories",
+    subCategory: "Scarves",
+    sizes: ["One Size"],
+    date: 1716673000000,
+    bestseller: true,
+  },
+  {
+    _id: "acces05",
+    name: "Leather Watch - Silver",
+    description:
+      "Elegant leather watch with silver stainless steel case. Water resistant.",
+    price: 450,
+    image: [Watches],
+    category: "Accessories",
+    subCategory: "Watches",
+    sizes: ["One Size"],
+    date: 1716674000000,
+    bestseller: false,
+  },
+  {
+    _id: "acces06",
+    name: "Leather Gloves - Black",
+    description:
+      "Genuine leather gloves lining for winter. Touchscreen compatible.",
+    price: 180,
+    image: [Gloves],
+    category: "Accessories",
+    subCategory: "Gloves",
+    sizes: ["S", "M", "L"],
+    date: 1716675000000,
+    bestseller: false,
+  },
+  // Perfume
+  {
+    _id: "perf01",
+    name: "Oud Wood Elite",
+    description:
+      "Luxurious oud wood fragrance with notes of agarwood, sandalwood and amber.",
+    price: 650,
+    image: [Perfume],
+    category: "Perfume",
+    subCategory: "Unisex",
+    sizes: ["50ml", "100ml"],
+    date: 1716676000000,
+    bestseller: true,
+  },
+  {
+    _id: "perf02",
+    name: "Rose Midnight",
+    description:
+      "Romantic rose fragrance with notes of damask rose, jasmine and amber.",
+    price: 480,
+    image: [PerfumeRose],
+    category: "Perfume",
+    subCategory: "Women",
+    sizes: ["50ml", "100ml"],
+    date: 1716677000000,
+    bestseller: true,
+  },
+  {
+    _id: "perf03",
+    name: "Citrus Breeze",
+    description:
+      "Fresh citrus fragrance with notes of lemon, bergamot and green tea.",
+    price: 380,
+    image: [PerfumeCitrus],
+    category: "Perfume",
+    subCategory: "Men",
+    sizes: ["50ml", "100ml"],
+    date: 1716678000000,
+    bestseller: false,
+  },
+  {
+    _id: "perf04",
+    name: "Vanilla Dream",
+    description:
+      "Sweet vanilla fragrance with notes of vanilla bean, caramel and musk.",
+    price: 420,
+    image: [PerfumeVanilla],
+    category: "Perfume",
+    subCategory: "Women",
+    sizes: ["50ml", "100ml"],
+    date: 1716679000000,
+    bestseller: true,
+  },
+  {
+    _id: "perf05",
+    name: "Spice Orient",
+    description:
+      "Exotic spice fragrance with notes of cinnamon, cardamom and oud.",
+    price: 550,
+    image: [PerfumeSpice],
+    category: "Perfume",
+    subCategory: "Men",
+    sizes: ["50ml", "100ml"],
+    date: 1716680000000,
+    bestseller: false,
+  },
+  {
+    _id: "perf06",
+    name: "Flower Bloom",
+    description: "Floral bouquet with notes of jasmine, rose and lily.",
+    price: 390,
+    image: [PerfumeFlower],
+    category: "Perfume",
+    subCategory: "Women",
+    sizes: ["50ml", "100ml"],
+    date: 1716681000000,
+    bestseller: false,
+  },
+  // Shoes
+  {
+    _id: "shoe01",
+    name: "Leather Oxford Shoes - Black",
+    description:
+      "Classic leather oxford shoes with premium finish. Perfect for formal occasions.",
+    price: 580,
+    image: [shoesBlack],
+    category: "Shoes",
+    subCategory: "Formal",
+    sizes: ["40", "41", "42", "43", "44", "45"],
+    date: 1716682000000,
+    bestseller: true,
+  },
+  {
+    _id: "shoe02",
+    name: "Running Sneakers - White",
+    description: "Lightweight running sneakers with breathable mesh upper.",
+    price: 420,
+    image: [shoesWhite],
+    category: "Shoes",
+    subCategory: "Sports",
+    sizes: ["40", "41", "42", "43", "44", "45"],
+    date: 1716683000000,
+    bestseller: true,
+  },
+  {
+    _id: "shoe03",
+    name: "Leather Loafers - Brown",
+    description:
+      "Comfortable leather loafers with cushioned insole. Perfect for casual wear.",
+    price: 380,
+    image: [shoesBrown],
+    category: "Shoes",
+    subCategory: "Casual",
+    sizes: ["40", "41", "42", "43", "44", "45"],
+    date: 1716684000000,
+    bestseller: false,
+  },
+  {
+    _id: "shoe04",
+    name: "High Heels - Strappy",
+    description: "Elegant strappy high heels. Perfect for evening wear.",
+    price: 450,
+    image: [shoesStrappy],
+    category: "Shoes",
+    subCategory: "Heels",
+    sizes: ["36", "37", "38", "39", "40"],
+    date: 1716685000000,
+    bestseller: true,
+  },
+  {
+    _id: "shoe05",
+    name: "Leather Boots - Chelsea",
+    description:
+      "Classic chelsea boots with elastic side panels. Premium leather construction.",
+    price: 520,
+    image: [shoesChelsea],
+    category: "Shoes",
+    subCategory: "Boots",
+    sizes: ["40", "41", "42", "43", "44", "45"],
+    date: 1716686000000,
+    bestseller: false,
+  },
+  {
+    _id: "shoe06",
+    name: "Sandals - Roman",
+    description: "Comfortable roman style sandals. Genuine leather straps.",
+    price: 280,
+    image: [shoesSandals],
+    category: "Shoes",
+    subCategory: "Sandals",
+    sizes: ["40", "41", "42", "43", "44", "45"],
+    date: 1716687000000,
     bestseller: false,
   },
 ];

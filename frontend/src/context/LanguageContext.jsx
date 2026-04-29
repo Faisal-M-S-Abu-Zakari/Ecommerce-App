@@ -29,8 +29,12 @@ export const LanguageProvider = ({ children }) => {
     logout: isRtl ? "تسجيل الخروج" : "Logout",
 
     // Hero
-    heroTitle: isRtl ? "اكتشف الفخامة في كل تفصيل" : "Discover Luxury in Every Detail",
-    heroSub: isRtl ? "مجموعة ملابس حصرية تجمع بين الأصالة والعصرية لتناسب ذوقك الرفيع." : "An exclusive collection of clothing that combines heritage and modernity to suit your fine taste.",
+    heroTitle: isRtl
+      ? "اكتشف الفخامة في كل تفصيل"
+      : "Discover Luxury in Every Detail",
+    heroSub: isRtl
+      ? "مجموعة ملابس حصرية تجمع بين الأصالة والعصرية لتناسب ذوقك الرفيع."
+      : "An exclusive collection of clothing that combines heritage and modernity to suit your fine taste.",
     shopNow: isRtl ? "تسوق الآن" : "Shop Now",
 
     // Sections
@@ -46,7 +50,9 @@ export const LanguageProvider = ({ children }) => {
     price: isRtl ? "السعر" : "Price",
     size: isRtl ? "المقاس" : "Size",
     addedToCart: isRtl ? "تمت الإضافة للسلة" : "Added to cart!",
-    pleaseLogin: isRtl ? "يرجى تسجيل الدخول لإضافة منتجات للسلة" : "Please login to add items to cart",
+    pleaseLogin: isRtl
+      ? "يرجى تسجيل الدخول لإضافة منتجات للسلة"
+      : "Please login to add items to cart",
     selectSizeFirst: isRtl ? "يرجى اختيار المقاس" : "Please select a size",
 
     // Cart
@@ -55,7 +61,6 @@ export const LanguageProvider = ({ children }) => {
     continueShopping: isRtl ? "متابعة التسوق" : "Continue Shopping",
     proceedCheckout: isRtl ? "إتمام الشراء" : "Proceed to Checkout",
     subtotal: isRtl ? "المجموع الفرعي" : "Subtotal",
-    shipping: isRtl ? "الشحن" : "Shipping",
     total: isRtl ? "المجموع" : "Total",
     itemRemoved: isRtl ? "تمت إزالة المنتج من السلة" : "Item removed from cart",
 
@@ -93,23 +98,37 @@ export const LanguageProvider = ({ children }) => {
 
     // About
     aboutTitle: isRtl ? "عن متجرنا" : "About Us",
-    aboutDesc1: isRtl ? "لقد تم إنشاءي بpurpose — لجعل التسوق أسهل وأسرع وأكثر متعة. بدأت بفكرة بسيطة، لكنني نمت إلى منصة يمكنك من خلالها استكشاف واكتشاف وشراء مجموعة واسعة من المنتجات من راحة منزلك. مهمتي هي أن أقدم لك الراحة والثقة تجربة تسوق سلسة في كل مرة تزورني." : "I was created with a purpose — to make online shopping easier, faster, and more enjoyable. I began as a simple idea, but I grew into a platform where you can explore, discover, and purchase a wide range of products from the comfort of your home.",
-    aboutDesc2: isRtl ? "منذ يوم إطلاقها، كنت مكرساً لتقديم مجموعة مختارة بعناية من الأزياء العصرية عالية الجودة للنساء والرجال والأطفال. كل قطعة أقدمها مختارة بعناية، من موردين موثوقين لضمان التنوع والراحة والأناقة الحديثة — وكل ذلك собрано لك في مكان واحد." : "Since the day I launched, I've been devoted to offering a thoughtfully curated collection of stylish, high-quality clothing for women, men, and kids.",
+    aboutDesc1: isRtl
+      ? "لقد تم إنشاءي بpurpose — لجعل التسوق أسهل وأسرع وأكثر متعة. بدأت بفكرة بسيطة، لكنني نمت إلى منصة يمكنك من خلالها استكشاف واكتشاف وشراء مجموعة واسعة من المنتجات من راحة منزلك. مهمتي هي أن أقدم لك الراحة والثقة تجربة تسوق سلسة في كل مرة تزورني."
+      : "I was created with a purpose — to make online shopping easier, faster, and more enjoyable. I began as a simple idea, but I grew into a platform where you can explore, discover, and purchase a wide range of products from the comfort of your home.",
+    aboutDesc2: isRtl
+      ? "منذ يوم إطلاقها، كنت مكرساً لتقديم مجموعة مختارة بعناية من الأزياء العصرية عالية الجودة للنساء والرجال والأطفال. كل قطعة أقدمها مختارة بعناية، من موردين موثوقين لضمان التنوع والراحة والأناقة الحديثة — وكل ذلك собрано لك في مكان واحد."
+      : "Since the day I launched, I've been devoted to offering a thoughtfully curated collection of stylish, high-quality clothing for women, men, and kids.",
     aboutMission: isRtl ? "مهمتي" : "My Mission",
-    missionText: isRtl ? "مهمتي هي تمكينك من الاختيار والراحة والثقة. ملتزماً为您提供 تجربة تسوق سلسة وممتعة تتجاوز التوقعات — من لحظة تصفحك، إلى تقديم طلبك، واستلامDelivery، وكل ما يلي." : "My mission is to empower you with choice, convenience, and confidence. I'm committed to giving you a smooth, enjoyable shopping experience that goes beyond expectations.",
+    missionText: isRtl
+      ? "مهمتي هي تمكينك من الاختيار والراحة والثقة. ملتزماً تجربة تسوق سلسة وممتعة تتجاوز التوقعات — من لحظة تصفحك، إلى تقديم طلبك، واستلامDelivery، وكل ما يلي."
+      : "My mission is to empower you with choice, convenience, and confidence. I'm committed to giving you a smooth, enjoyable shopping experience that goes beyond expectations.",
     qualityAssurance: isRtl ? "ضمان الجودة" : "Quality Assurance",
-    qualityText: isRtl ? "أختار وأفحص كل منتج بعناية لضمان استيفاء معايير الجودة لدينا." : "I meticulously select and vet each product to ensure it meets our stringent quality standards.",
+    qualityText: isRtl
+      ? "أختار وأفحص كل منتج بعناية لضمان استيفاء معايير الجودة لدينا."
+      : "I meticulously select and vet each product to ensure it meets our stringent quality standards.",
     convenience: isRtl ? "الراحة" : "Convenience",
-    convenienceText: isRtl ? "مع واجهة سهلة الاستخدام عملية طلب بدون متاعب، التسوق لم يكن أسهل." : "With my user-friendly interface and hassle-free ordering process, shopping has never been easier.",
+    convenienceText: isRtl
+      ? "مع واجهة سهلة الاستخدام عملية طلب بدون متاعب، التسوق لم يكن أسهل."
+      : "With my user-friendly interface and hassle-free ordering process, shopping has never been easier.",
     customerService: isRtl ? "خدمة العملاء" : "Customer Service",
-    customerServiceText: isRtl ? "أنا مدعوم بفريق مخصص موجود دائماً للمساعدة، مما يضمن تجربة سهلة ورضاك دائماً يأتي أولاً." : "I'm supported by a dedicated team that's always here to help, making sure your experience is effortless and your satisfaction always comes first.",
+    customerServiceText: isRtl
+      ? "أنا مدعوم بفريق مخصص موجود دائماً للمساعدة، مما يضمن تجربة سهلة ورضاك دائماً يأتي أولاً."
+      : "I'm supported by a dedicated team that's always here to help, making sure your experience is effortless and your satisfaction always comes first.",
 
     // Contact
     ourStore: isRtl ? "متجرنا" : "OUR STORE",
     storeLocation: isRtl ? "إstanbul، Türkiye" : "Istanbul, Türkiye",
     tel: isRtl ? "الهاتف" : "Tel",
     careers: isRtl ? "وظائف في Faisal" : "CAREERS AT FAISAL",
-    careersText: isRtl ? "تعرف على فرقنا ووظائف الشاغرة." : "Learn more about my teams and job openings.",
+    careersText: isRtl
+      ? "تعرف على فرقنا ووظائف الشاغرة."
+      : "Learn more about my teams and job openings.",
     exploreJobs: isRtl ? "استكشف الوظائف" : "Explore Jobs",
 
     // Product Page
@@ -121,20 +140,30 @@ export const LanguageProvider = ({ children }) => {
     writeReview: isRtl ? "اكتب تقييمك..." : "Write your review...",
     submitReview: isRtl ? "إرسال التقييم" : "Submit Review",
     loadingReviews: isRtl ? "جاري تحميل التقييمات..." : "Loading reviews...",
-    noReviews: isRtl ? "لا توجد تقييمات بعد. كن أول من يقيّم!" : "No reviews yet. Be the first to review!",
+    noReviews: isRtl
+      ? "لا توجد تقييمات بعد. كن أول من يقيّم!"
+      : "No reviews yet. Be the first to review!",
     originalProduct: isRtl ? "منتج أصلي 100%." : "100% Original product.",
-    codAvailable: isRtl ? "الدفع عند الاستلام متاح لهذا المنتج." : "Cash on delivery is available on this product.",
-    returnPolicy: isRtl ? "سياسة الإرجاع والاستبدال خلال 7 أيام." : "Easy return and exchange policy within 7 days.",
-    pleaseLogin: isRtl ? "يرجى تسجيل الدخول لإضافة تقييم" : "Please login to add a comment",
+    codAvailable: isRtl
+      ? "الدفع عند الاستلام متاح لهذا المنتج."
+      : "Cash on delivery is available on this product.",
+    returnPolicy: isRtl
+      ? "سياسة الإرجاع والاستبدال خلال 7 أيام."
+      : "Easy return and exchange policy within 7 days.",
+    pleaseLoginReview: isRtl
+      ? "يرجى تسجيل الدخول لإضافة تقييم"
+      : "Please login to add a comment",
     writeComment: isRtl ? "يرجى كتابة تقييم" : "Please write a comment",
-    commentAdded: isRtl ? "تم إضافة التقييم بنجاح!" : "Comment added successfully!",
+    commentAdded: isRtl
+      ? "تم إضافة التقييم بنجاح!"
+      : "Comment added successfully!",
     commentFailed: isRtl ? "فشل في إضافة التقييم" : "Failed to add comment",
 
     // Misc
     loading: isRtl ? "جاري التحميل..." : "Loading...",
     currency: isRtl ? "ر.س" : "SAR",
 
-    // Footer
+// Footer
     privacy: isRtl ? "الخصوصية" : "Privacy",
     terms: isRtl ? "الشروط" : "Terms",
     shipping: isRtl ? "الشحن" : "Shipping",
@@ -142,11 +171,16 @@ export const LanguageProvider = ({ children }) => {
 
     // Policy
     exchangePolicy: isRtl ? "سياسة الاستبدال السهلة" : "Easy Exchange Policy",
-    exchangeText: isRtl ? "أقدم سياسة استبدال بدون متاعب" : "I offer hassle free exchange policy",
-    returnPolicy: isRtl ? "سياسة الإرجاع خلال 7 أيام" : "7 Days Return Policy",
-    returnText: isRtl ? "أوفر إرجاع مجاني خلال 7 أيام" : "I provide 7 days free return policy",
+    exchangeText: isRtl
+      ? "أقدم سياسة استبدال بدون متاعب"
+      : "I offer hassle free exchange policy",
+    returnText: isRtl
+      ? "أوفر إرجاع مجاني خلال 7 أيام"
+      : "I provide 7 days free return policy",
     supportPolicy: isRtl ? "دعم العملاء الأفضل" : "Best Customer Support",
-    supportText: isRtl ? "أوفر دعم عملاء على مدار الساعة" : "I provide 24/7 customer support",
+    supportText: isRtl
+      ? "أوفر دعم عملاء على مدار الساعة"
+      : "I provide 24/7 customer support",
 
     // Related Products
     relatedProducts: isRtl ? "منتجات ذات صلة" : "RELATED",
@@ -163,6 +197,9 @@ export const LanguageProvider = ({ children }) => {
     men: isRtl ? "رجالي" : "Men",
     women: isRtl ? "نسائي" : "Women",
     kids: isRtl ? "أطفال" : "Kids",
+    accessories: isRtl ? "إكسسوارات" : "Accessories",
+    perfume: isRtl ? "عطور" : "Perfume",
+    shoes: isRtl ? "أحذية" : "Shoes",
     noProducts: isRtl ? "لم يتم العثور على منتجات" : "No products found",
 
     // Sub-categories

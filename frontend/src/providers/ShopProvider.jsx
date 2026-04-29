@@ -199,27 +199,18 @@ const ShopContextProvider = ({ children }) => {
   }, [products]);
 
   const addToCart = (productId, size) => {
-    // Redirect to login if not logged in
     if (!token) {
       navigate("/login");
       toast.error("Please login to add items to cart");
       return;
     }
 
-    // if the user doesn't select a size then show an error message
     if (!size) {
       toast.error("Please select a size");
       return;
     }
 
-    // check if the product is already in the cart
-    // then you will update the quantity , otherwise you will add it to the cart
-    // add new product to the cart
-
-    // So , here if i add {productId: 1, size: 'M'} and then i add {productId: 1, size: 'L'} , the second one will be added to the cart as new product
-
     setCartProducts((prev) => {
-      // Ensure prev is always an array
       const cart = Array.isArray(prev) ? prev : [];
       
       const existingItem = cart.find(
@@ -241,6 +232,7 @@ const ShopContextProvider = ({ children }) => {
         syncCartToBackend(newCart);
       }
       
+      toast.success("Added to cart!");
       return newCart;
     });
   };

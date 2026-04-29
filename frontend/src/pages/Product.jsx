@@ -43,7 +43,7 @@ const Product = () => {
 
   const handleAddComment = async () => {
     if (!token) {
-      toast.error(t.pleaseLogin);
+      toast.error(t.pleaseLoginReview);
       navigate("/login");
       return;
     }
@@ -161,6 +161,11 @@ const Product = () => {
           </div>
           <button
             onClick={() => {
+              if (!token) {
+                toast.error(t.pleaseLogin);
+                navigate("/login");
+                return;
+              }
               if (!selectedSize) {
                 toast.error(t.selectSizeFirst);
                 return;

@@ -19,16 +19,24 @@ const Contact = () => {
           </div>
 
           <div className="flex flex-col md:flex-row justify-center gap-10 mb-28">
-            <img className="w-full md:max-w-[500px] rounded-2xl" src={assets.contact_img} alt="" />
+            <img
+              className="w-full md:max-w-125 rounded-2xl"
+              src={assets.contact_img}
+              alt=""
+            />
             <div className="flex flex-col justify-center items-start gap-6">
-              <p className="font-semibold text-gray-700 text-xl">{t.ourStore}</p>
+              <p className="font-semibold text-gray-700 text-xl">
+                {t.ourStore}
+              </p>
               <p className="text-gray-500">{t.storeLocation}</p>
               <p className="text-gray-500">
-                {t.tel}: +90 534 259 48 19
+                {t.tel}: +972 599 091 546
                 <br />
-                Email: ellashahba@gmail.com
+                Email: zkryfysl@gmail.com
               </p>
-              <p className="font-semibold text-gray-700 text-xl mt-4">{t.careers}</p>
+              <p className="font-semibold text-gray-700 text-xl mt-4">
+                {t.careers}
+              </p>
               <p className="text-gray-500">{t.careersText}</p>
               <button className="bg-[#BC9355] hover:bg-[#a67d40] px-8 py-4 rounded-full text-white font-bold text-sm transition-all hover:shadow-lg">
                 {t.exploreJobs}

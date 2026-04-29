@@ -1,4 +1,5 @@
-import { useContext, useMemo, useState } from "react";
+import { useContext, useMemo, useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import ShopContext from "../context/ShopContext";
 import ProductItem from "../components/ProductItem";
 import { useLanguage } from "../context/LanguageContext";
@@ -6,12 +7,20 @@ import { useLanguage } from "../context/LanguageContext";
 const Collection = () => {
   const { products, search } = useContext(ShopContext);
   const { t } = useLanguage();
+  const [searchParams] = useSearchParams();
+  const urlCategory = searchParams.get("category");
   const [showFilter, setShowFilter] = useState(false);
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
   const [sortBy, setSortBy] = useState("relevant");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
+
+  useEffect(() => {
+    if (urlCategory) {
+      setCategories([urlCategory]);
+    }
+  }, [urlCategory]);
 
   const getRating = (index) => {
     const fixedRatings = [4.5, 4.8, 4.7, 4.9, 4.6, 5.0, 4.4, 4.3, 4.7, 4.5, 4.6, 4.8];
@@ -156,7 +165,7 @@ const Collection = () => {
               <div className="mb-6">
                 <h4 className="font-semibold mb-3">{t.category}</h4>
                 <div className="flex flex-col gap-2">
-                  {[t.men, t.women, t.kids].map((cat) => (
+                  {[t.men, t.women, t.kids, "Accessories", "Perfume", "Shoes"].map((cat) => (
                     <label key={cat} className="flex items-center gap-2 cursor-pointer">
                       <input
                         type="checkbox"
@@ -165,7 +174,7 @@ const Collection = () => {
                         checked={categories.includes(cat)}
                         className="w-4 h-4 accent-[#BC9355]"
                       />
-                      <span className="text-sm">{cat}</span>
+                      <span className="text-sm">{cat === "Accessories" ? t.accessories : cat === "Perfume" ? t.perfume : cat === "Shoes" ? t.shoes : cat}</span>
                     </label>
                   ))}
                 </div>
@@ -186,6 +195,66 @@ const Collection = () => {
                       <span className="text-sm">{sub}</span>
                     </label>
                   ))}
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      value="Belts"
+                      onChange={toggleSubCategory}
+                      checked={subCategories.includes("Belts")}
+                      className="w-4 h-4 accent-[#BC9355]"
+                    />
+                    <span className="text-sm">Belts</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      value="Watches"
+                      onChange={toggleSubCategory}
+                      checked={subCategories.includes("Watches")}
+                      className="w-4 h-4 accent-[#BC9355]"
+                    />
+                    <span className="text-sm">Watches</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      value="Sunglasses"
+                      onChange={toggleSubCategory}
+                      checked={subCategories.includes("Sunglasses")}
+                      className="w-4 h-4 accent-[#BC9355]"
+                    />
+                    <span className="text-sm">Sunglasses</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      value="Formal"
+                      onChange={toggleSubCategory}
+                      checked={subCategories.includes("Formal")}
+                      className="w-4 h-4 accent-[#BC9355]"
+                    />
+                    <span className="text-sm">Formal</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      value="Casual"
+                      onChange={toggleSubCategory}
+                      checked={subCategories.includes("Casual")}
+                      className="w-4 h-4 accent-[#BC9355]"
+                    />
+                    <span className="text-sm">Casual</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      value="Sports"
+                      onChange={toggleSubCategory}
+                      checked={subCategories.includes("Sports")}
+                      className="w-4 h-4 accent-[#BC9355]"
+                    />
+                    <span className="text-sm">Sports</span>
+                  </label>
                 </div>
               </div>
             </div>
