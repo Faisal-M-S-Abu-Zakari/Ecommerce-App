@@ -175,6 +175,9 @@ const Edit = ({ token }) => {
               <option value="Men">Men</option>
               <option value="Women">Women</option>
               <option value="Kids">Kids</option>
+              <option value="Accessories">Accessories</option>
+              <option value="Perfume">Perfume</option>
+              <option value="Shoes">Shoes</option>
             </select>
           </div>
           <div>
@@ -187,6 +190,12 @@ const Edit = ({ token }) => {
               <option value="Topwear">Topwear</option>
               <option value="Bottomwear">Bottomwear</option>
               <option value="Winterwear">Winterwear</option>
+              <option value="Belts">Belts</option>
+              <option value="Watches">Watches</option>
+              <option value="Sunglasses">Sunglasses</option>
+              <option value="Formal">Formal</option>
+              <option value="Casual">Casual</option>
+              <option value="Sports">Sports</option>
             </select>
           </div>
 
