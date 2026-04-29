@@ -165,16 +165,23 @@ const Collection = () => {
               <div className="mb-6">
                 <h4 className="font-semibold mb-3">{t.category}</h4>
                 <div className="flex flex-col gap-2">
-                  {[t.men, t.women, t.kids, "Accessories", "Perfume", "Shoes"].map((cat) => (
-                    <label key={cat} className="flex items-center gap-2 cursor-pointer">
+                  {[
+                    { id: "Men", label: t.men },
+                    { id: "Women", label: t.women },
+                    { id: "Kids", label: t.kids },
+                    { id: "Accessories", label: t.accessories },
+                    { id: "Perfume", label: t.perfume },
+                    { id: "Shoes", label: t.shoes },
+                  ].map((cat) => (
+                    <label key={cat.id} className="flex items-center gap-2 cursor-pointer">
                       <input
                         type="checkbox"
-                        value={cat}
+                        value={cat.id}
                         onChange={toggleCategory}
-                        checked={categories.includes(cat)}
+                        checked={categories.includes(cat.id)}
                         className="w-4 h-4 accent-[#BC9355]"
                       />
-                      <span className="text-sm">{cat === "Accessories" ? t.accessories : cat === "Perfume" ? t.perfume : cat === "Shoes" ? t.shoes : cat}</span>
+                      <span className="text-sm">{cat.label}</span>
                     </label>
                   ))}
                 </div>
@@ -183,78 +190,64 @@ const Collection = () => {
               <div className="mb-6">
                 <h4 className="font-semibold mb-3">{t.type}</h4>
                 <div className="flex flex-col gap-2">
-                  {[t.topwear, t.bottomwear, t.winterwear].map((sub) => (
-                    <label key={sub} className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        value={sub}
-                        onChange={toggleSubCategory}
-                        checked={subCategories.includes(sub)}
-                        className="w-4 h-4 accent-[#BC9355]"
-                      />
-                      <span className="text-sm">{sub}</span>
-                    </label>
-                  ))}
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      value="Belts"
-                      onChange={toggleSubCategory}
-                      checked={subCategories.includes("Belts")}
-                      className="w-4 h-4 accent-[#BC9355]"
-                    />
-                    <span className="text-sm">Belts</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      value="Watches"
-                      onChange={toggleSubCategory}
-                      checked={subCategories.includes("Watches")}
-                      className="w-4 h-4 accent-[#BC9355]"
-                    />
-                    <span className="text-sm">Watches</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      value="Sunglasses"
-                      onChange={toggleSubCategory}
-                      checked={subCategories.includes("Sunglasses")}
-                      className="w-4 h-4 accent-[#BC9355]"
-                    />
-                    <span className="text-sm">Sunglasses</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      value="Formal"
-                      onChange={toggleSubCategory}
-                      checked={subCategories.includes("Formal")}
-                      className="w-4 h-4 accent-[#BC9355]"
-                    />
-                    <span className="text-sm">Formal</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      value="Casual"
-                      onChange={toggleSubCategory}
-                      checked={subCategories.includes("Casual")}
-                      className="w-4 h-4 accent-[#BC9355]"
-                    />
-                    <span className="text-sm">Casual</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      value="Sports"
-                      onChange={toggleSubCategory}
-                      checked={subCategories.includes("Sports")}
-                      className="w-4 h-4 accent-[#BC9355]"
-                    />
-                    <span className="text-sm">Sports</span>
-                  </label>
+                  {(() => {
+                    const categorySubcategoryMap = {
+                      Men: ["Topwear", "Bottomwear", "Winterwear"],
+                      Women: ["Topwear", "Bottomwear", "Winterwear"],
+                      Kids: ["Topwear", "Bottomwear", "Winterwear"],
+                      Accessories: ["Belts", "Wallets", "Sunglasses", "Scarves", "Watches", "Gloves"],
+                      Perfume: ["Unisex", "Women", "Men"],
+                      Shoes: ["Formal", "Sports", "Casual", "Heels", "Boots", "Sandals"],
+                    };
+                    
+                    let availableSubCategoryIds = [];
+                    if (categories.length > 0) {
+                      categories.forEach(cat => {
+                        if (categorySubcategoryMap[cat]) {
+                          availableSubCategoryIds.push(...categorySubcategoryMap[cat]);
+                        }
+                      });
+                      availableSubCategoryIds = [...new Set(availableSubCategoryIds)];
+                    } else {
+                      // If no category is selected, show all subcategories
+                      availableSubCategoryIds = Object.values(categorySubcategoryMap).flat();
+                      availableSubCategoryIds = [...new Set(availableSubCategoryIds)];
+                    }
+
+                    return [
+                      { id: "Topwear", label: t.topwear },
+                      { id: "Bottomwear", label: t.bottomwear },
+                      { id: "Winterwear", label: t.winterwear },
+                      { id: "Belts", label: t.belts },
+                      { id: "Wallets", label: t.wallets },
+                      { id: "Sunglasses", label: t.sunglasses },
+                      { id: "Scarves", label: t.scarves },
+                      { id: "Watches", label: t.watches },
+                      { id: "Gloves", label: t.gloves },
+                      { id: "Unisex", label: t.unisex },
+                      { id: "Women", label: t.women },
+                      { id: "Men", label: t.men },
+                      { id: "Formal", label: t.formal },
+                      { id: "Casual", label: t.casual },
+                      { id: "Sports", label: t.sports },
+                      { id: "Heels", label: t.heels },
+                      { id: "Boots", label: t.boots },
+                      { id: "Sandals", label: t.sandals },
+                    ]
+                    .filter((sub) => availableSubCategoryIds.includes(sub.id))
+                    .map((sub) => (
+                      <label key={sub.id} className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          value={sub.id}
+                          onChange={toggleSubCategory}
+                          checked={subCategories.includes(sub.id)}
+                          className="w-4 h-4 accent-[#BC9355]"
+                        />
+                        <span className="text-sm">{sub.label}</span>
+                      </label>
+                    ));
+                  })()}
                 </div>
               </div>
             </div>
