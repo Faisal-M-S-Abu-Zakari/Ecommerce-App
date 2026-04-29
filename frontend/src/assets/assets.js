@@ -79,7 +79,7 @@ import kids from "./kids.jpg";
 import yaso from "./yaso.webp";
 import accessories from "./Accessories.jpg";
 
-import Accessories from "./Accessories.jpg";
+
 import perfume from "./perfume.jpg";
 import Shoes from "./Shoes.jpg";
 import Accessories1 from "./Accessories1.jpg";
