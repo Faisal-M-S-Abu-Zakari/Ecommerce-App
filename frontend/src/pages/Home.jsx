@@ -1,7 +1,7 @@
 import BestSeller from "../components/BestSeller";
 import Hero from "../components/Hero";
 import LatestCollection from "../components/LatestCollection";
-import NewsLetterBox from "../components/NewsLetterBox";
+import NewsletterBox from "../components/Newsletter";
 import OurPolicy from "../components/OurPolicy";
 import CategoriesSection from "../components/CategoriesSection";
 import PromoBanner from "../components/PromoBanner";
@@ -19,7 +19,7 @@ const Home = () => {
       <BestSeller />
       <TrustBadges />
       {/* <OurPolicy /> */}
-      <NewsLetterBox />
+      <NewsletterBox />
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { assets } from "../assets/assets";
-import NewsletterBox from "../components/NewsLetterBox";
+import NewsletterBox from "../components/Newsletter";
 import { useLanguage } from "../context/LanguageContext";
 
 const Contact = () => {
