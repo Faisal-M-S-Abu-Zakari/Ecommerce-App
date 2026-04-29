@@ -99,7 +99,7 @@ import PerfumeVanilla from "./PerfumeVanilla.avif";
 import Scarves from "./Scarves.avif";
 import Sunglasses from "./Sunglasses.avif";
 import Watches from "./Watches.avif";
-import Gloves from " ./Gloves.avif";
+import Gloves from "./Gloves.avif";
 
 export const assets = {
   logo,
