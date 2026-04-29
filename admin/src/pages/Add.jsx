@@ -184,11 +184,20 @@ const Add = ({ token }) => {
               <option value="Bottomwear">Bottomwear</option>
               <option value="Winterwear">Winterwear</option>
               <option value="Belts">Belts</option>
-              <option value="Watches">Watches</option>
+              <option value="Wallets">Wallets</option>
               <option value="Sunglasses">Sunglasses</option>
+              <option value="Scarves">Scarves</option>
+              <option value="Watches">Watches</option>
+              <option value="Gloves">Gloves</option>
+              <option value="Unisex">Unisex</option>
+              <option value="Women">Women</option>
+              <option value="Men">Men</option>
               <option value="Formal">Formal</option>
-              <option value="Casual">Casual</option>
               <option value="Sports">Sports</option>
+              <option value="Casual">Casual</option>
+              <option value="Heels">Heels</option>
+              <option value="Boots">Boots</option>
+              <option value="Sandals">Sandals</option>
             </select>
           </div>
 
