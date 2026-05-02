@@ -6,9 +6,10 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     cartData: { type: Object, default: {} },
-    // optional avatar URL for user profile photo
     avatar: { type: String, default: "" },
     isAdmin: { type: Boolean, default: false },
+    phone: { type: String, default: "" },
+    addresses: { type: Array, default: [] },
   },
   //   here i am setting minimize to false to ensure that empty objects are stored in the database instead of being removed. This is important for the cartData field, which is initialized as an empty object and may be updated with user cart information later on.
   // By default, Mongoose removes empty objects from the database, but setting minimize to false allows us to keep the cartData field even when it's empty, ensuring that we can easily update it with cart information as needed.

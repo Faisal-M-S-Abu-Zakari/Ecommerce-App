@@ -181,10 +181,60 @@ const getUserProfile = async (req, res) => {
   try {
     const userId = req.userId;
     const user = await userModel.findById(userId).select("-password");
-    if (!user) {
-      return res.json({ success: false, message: "User not found" });
+    if (!user) return res.json({ success: false, message: "User not found" });
+    res.json({
+      success: true,
+      user: { name: user.name, email: user.email, phone: user.phone || "", addresses: user.addresses || [] },
+    });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+const updateUserProfile = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { name, phone, currentPassword, newPassword } = req.body;
+    const user = await userModel.findById(userId);
+    if (!user) return res.json({ success: false, message: "User not found" });
+
+    const updateData = {};
+    if (name) updateData.name = name;
+    if (phone !== undefined) updateData.phone = phone;
+
+    if (currentPassword && newPassword) {
+      const isCorrect = await bcrypt.compare(currentPassword, user.password);
+      if (!isCorrect) return res.json({ success: false, message: "Current password is incorrect" });
+      if (newPassword.length < 8) return res.json({ success: false, message: "New password must be at least 8 characters" });
+      const salt = await bcrypt.genSalt(10);
+      updateData.password = await bcrypt.hash(newPassword, salt);
     }
-    res.json({ success: true, user: { name: user.name, email: user.email } });
+
+    const updated = await userModel.findByIdAndUpdate(userId, updateData, { new: true }).select("-password");
+    res.json({ success: true, message: "Profile updated successfully", user: { name: updated.name, email: updated.email, phone: updated.phone || "" } });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+const addAddress = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { firstName, lastName, street, city, state, zipcode, country, phone } = req.body;
+    const address = { firstName, lastName, street, city, state, zipcode, country, phone, _id: Date.now().toString() };
+    await userModel.findByIdAndUpdate(userId, { $push: { addresses: address } });
+    res.json({ success: true, message: "Address added", address });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+const removeAddress = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { addressId } = req.body;
+    await userModel.findByIdAndUpdate(userId, { $pull: { addresses: { _id: addressId } } });
+    res.json({ success: true, message: "Address removed" });
   } catch (error) {
     res.json({ success: false, message: error.message });
   }
@@ -199,4 +249,7 @@ export {
   getAdminProfile,
   uploadAdminAvatar,
   getUserProfile,
+  updateUserProfile,
+  addAddress,
+  removeAddress,
 };

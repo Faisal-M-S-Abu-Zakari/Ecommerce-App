@@ -14,6 +14,7 @@ const Collection = () => {
   const [subCategories, setSubCategories] = useState([]);
   const [sortBy, setSortBy] = useState("relevant");
   const [currentPage, setCurrentPage] = useState(1);
+  const [priceRange, setPriceRange] = useState([0, 5000]);
   const itemsPerPage = 12;
 
   useEffect(() => {
@@ -57,6 +58,7 @@ const Collection = () => {
     if (subCategories.length > 0) {
       result = result.filter((p) => subCategories.includes(p.subCategory));
     }
+    result = result.filter((p) => p.price >= priceRange[0] && p.price <= priceRange[1]);
 
     if (sortBy === "low-high") {
       result.sort((a, b) => a.price - b.price);
@@ -65,7 +67,7 @@ const Collection = () => {
     }
 
     return result;
-  }, [products, search, categories, subCategories, sortBy]);
+  }, [products, search, categories, subCategories, sortBy, priceRange]);
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -184,6 +186,54 @@ const Collection = () => {
                       <span className="text-sm">{cat.label}</span>
                     </label>
                   ))}
+                </div>
+              </div>
+
+              <div className="mb-6">
+                <h4 className="font-semibold mb-3">{t.priceRange || "Price Range"}</h4>
+                <div className="space-y-3">
+                  <div className="flex justify-between text-sm text-gray-500">
+                    <span>${priceRange[0]}</span>
+                    <span>${priceRange[1]}</span>
+                  </div>
+                  <input
+                    type="range"
+                    min={0}
+                    max={5000}
+                    step={50}
+                    value={priceRange[1]}
+                    onChange={(e) => {
+                      setCurrentPage(1);
+                      setPriceRange([priceRange[0], Number(e.target.value)]);
+                    }}
+                    className="w-full accent-[#BC9355]"
+                  />
+                  <div className="flex gap-2">
+                    <input
+                      type="number"
+                      value={priceRange[0]}
+                      onChange={(e) => { setCurrentPage(1); setPriceRange([Number(e.target.value), priceRange[1]]); }}
+                      placeholder="Min"
+                      className="w-1/2 px-2 py-1.5 border border-gray-200 rounded-lg text-xs focus:outline-none focus:border-[#BC9355]"
+                      min={0}
+                    />
+                    <input
+                      type="number"
+                      value={priceRange[1]}
+                      onChange={(e) => { setCurrentPage(1); setPriceRange([priceRange[0], Number(e.target.value)]); }}
+                      placeholder="Max"
+                      className="w-1/2 px-2 py-1.5 border border-gray-200 rounded-lg text-xs focus:outline-none focus:border-[#BC9355]"
+                      min={0}
+                    />
+                  </div>
+                  {(priceRange[0] > 0 || priceRange[1] < 5000) && (
+                    <button
+                      onClick={() => { setCurrentPage(1); setPriceRange([0, 5000]); }}
+                      className="text-xs text-[#BC9355] hover:underline"
+                    >
+                      Reset price
+                    </button>
+                  )}
                 </div>
               </div>
 

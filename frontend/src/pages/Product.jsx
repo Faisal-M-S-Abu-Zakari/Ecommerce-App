@@ -25,7 +25,7 @@ const Product = () => {
   const fetchComments = async () => {
     try {
       setLoadingComments(true);
-      const res = await fetch(import.meta.env.VITE_API_URL + "/api/comment/product", {
+      const res = await fetch("/api/comment/product", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ productId }),
@@ -67,7 +67,7 @@ const Product = () => {
         commentLength: newComment.length
       });
       
-      const res = await fetch(import.meta.env.VITE_API_URL + "/api/comment/add", {
+      const res = await fetch("/api/comment/add", {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",
