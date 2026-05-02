@@ -3,7 +3,8 @@ import userModel from "../models/userModel.js";
 
 const placeOrder = async (req, res) => {
   try {
-    const { userId, items, amount, address, paymentMethod } = req.body;
+    const userId = req.userId || req.body.userId;
+    const { items, amount, address, paymentMethod } = req.body;
 
     const existingOrder = await orderModel.findOne({
       userId,

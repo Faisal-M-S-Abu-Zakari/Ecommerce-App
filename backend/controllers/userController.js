@@ -157,8 +157,9 @@ const uploadAdminAvatar = async (req, res) => {
 // Route for getting user cart
 const getCart = async (req, res) => {
   try {
-    const { userId } = req.body;
+    const userId = req.userId || req.body.userId;
     const user = await userModel.findById(userId);
+    if (!user) return res.json({ success: false, message: "User not found" });
     res.json({ success: true, cartData: user.cartData || {} });
   } catch (error) {
     res.json({ success: false, message: error.message });
@@ -168,7 +169,8 @@ const getCart = async (req, res) => {
 // Route for updating user cart
 const updateCart = async (req, res) => {
   try {
-    const { userId, cartData } = req.body;
+    const userId = req.userId || req.body.userId;
+    const { cartData } = req.body;
     await userModel.findByIdAndUpdate(userId, { cartData });
     res.json({ success: true, message: "Cart updated" });
   } catch (error) {
