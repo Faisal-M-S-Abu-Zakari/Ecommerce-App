@@ -27,8 +27,8 @@ const App = () => {
         <ToastContainer />
         <BackToTop />
         <NavBar />
-        <SearchBar />
         <div className="pt-16">
+          <SearchBar />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/collection" element={<Collection />} />
