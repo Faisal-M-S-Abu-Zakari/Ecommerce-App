@@ -62,3 +62,11 @@ externalPort = 3001
 
 [userenv.shared]
 PORT = "3000"
+
+[userenv.development]
+VITE_API_URL = "https://c1638899-d986-4ac4-92ca-381b2e163830-00-201y7ghzscw5d.sisko.replit.dev"
+
+[deployment]
+deploymentTarget = "autoscale"
+run = ["bash", "-c", "cd backend && node server.js & cd frontend && npx vite preview --host 0.0.0.0 --port 5000"]
+build = ["bash", "-c", "cd frontend && npm install && npm run build && cd ../backend && npm install"]
