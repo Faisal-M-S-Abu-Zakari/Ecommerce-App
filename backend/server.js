@@ -8,6 +8,8 @@ import userRouter from "./routes/userRoute.js";
 import productRouter from "./routes/productRoute.js";
 import orderRouter from "./routes/orderRoute.js";
 import commentRouter from "./routes/commentRoute.js";
+import wishlistRouter from "./routes/wishlistRoute.js";
+import couponRouter from "./routes/couponRoute.js";
 import userModel from "./models/userModel.js";
 import productModel from "./models/productModel.js";
 import orderModel from "./models/orderModel.js";
@@ -31,15 +33,16 @@ const initCollections = async () => {
 connectDB().then(() => initCollections());
 connectCloudinary();
 
-// Middlewares
-app.use(express.json()); // this middleware will allow us to parse the incoming request body as JSON
-app.use(cors()); // this middleware will allow us access to the backend from any IP .
+app.use(express.json());
+app.use(cors());
 
 // api endpoints
 app.use("/api/user", userRouter);
 app.use("/api/product", productRouter);
 app.use("/api/order", orderRouter);
 app.use("/api/comment", commentRouter);
+app.use("/api/wishlist", wishlistRouter);
+app.use("/api/coupon", couponRouter);
 
 app.get("/", (req, res) => {
   res.send("API Working");
@@ -50,10 +53,10 @@ app.get("/api/health", async (req, res) => {
     const mongoose = (await import("mongoose")).default;
     const state = mongoose.connection.readyState;
     const dbState = state === 1 ? "Connected" : "Disconnected";
-    res.json({ 
-      status: "ok", 
+    res.json({
+      status: "ok",
       database: dbState,
-      message: dbState === "Connected" ? "Data coming from MongoDB" : "Using fallback data"
+      message: dbState === "Connected" ? "Data coming from MongoDB" : "Using fallback data",
     });
   } catch (error) {
     res.json({ status: "error", message: error.message });

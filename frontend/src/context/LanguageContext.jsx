@@ -88,6 +88,7 @@ export const LanguageProvider = ({ children }) => {
     orderId: isRtl ? "رقم الطلب" : "Order ID",
     qty: isRtl ? "الكمية" : "Qty",
     orderTotal: isRtl ? "المجموع" : "Total",
+    orderPlaced: isRtl ? "تم تقديم الطلب" : "Order Placed",
 
     // Login
     password: isRtl ? "كلمة المرور" : "Password",
@@ -222,6 +223,67 @@ export const LanguageProvider = ({ children }) => {
 
     // Products count
     productsCount: isRtl ? "منتج" : "products",
+
+    // Wishlist
+    wishlist: isRtl ? "المفضلة" : "Wishlist",
+    savedItems: isRtl ? "المنتجات المحفوظة" : "Saved Items",
+    wishlistEmpty: isRtl ? "المفضلة فارغة" : "Your wishlist is empty",
+    wishlistEmptySub: isRtl ? "أضف منتجات للمفضلة لتجدها هنا" : "Save items you love to find them here",
+    savedProducts: isRtl ? "منتج محفوظ" : "saved items",
+    removeFromWishlist: isRtl ? "إزالة من المفضلة" : "Remove from wishlist",
+
+    // Order Success
+    orderSuccess: isRtl ? "تم تأكيد طلبك! 🎉" : "Order Confirmed! 🎉",
+    orderSuccessSub: isRtl ? "شكراً لك على طلبك، سنبدأ بتجهيزه فوراً." : "Thank you for your order, we'll start preparing it right away.",
+    whatHappensNext: isRtl ? "ماذا يحدث بعد ذلك؟" : "What happens next?",
+    nextStep1: isRtl ? "ستصلك رسالة تأكيد على بريدك الإلكتروني" : "You'll receive a confirmation email shortly",
+    nextStep2: isRtl ? "سنبدأ بتجهيز طلبك وتغليفه بعناية" : "We'll carefully pack and prepare your order",
+    nextStep3: isRtl ? "سيُشحن طلبك وستتلقى رقم التتبع" : "Your order will be shipped with a tracking number",
+    nextStep4: isRtl ? "سيصل طلبك إلى باب منزلك" : "Your order will arrive at your doorstep",
+    trackOrder: isRtl ? "تتبع الطلب" : "Track Order",
+
+    // Profile
+    myProfile: isRtl ? "ملفي الشخصي" : "My Profile",
+    account: isRtl ? "الحساب" : "Account",
+    personalInfo: isRtl ? "المعلومات الشخصية" : "Personal Info",
+    changePassword: isRtl ? "تغيير كلمة المرور" : "Change Password",
+    myAddresses: isRtl ? "عناوين التوصيل" : "My Addresses",
+    emailCannotChange: isRtl ? "لا يمكن تغيير البريد الإلكتروني" : "Email cannot be changed",
+    saving: isRtl ? "جاري الحفظ..." : "Saving...",
+    saveChanges: isRtl ? "حفظ التغييرات" : "Save Changes",
+    currentPassword: isRtl ? "كلمة المرور الحالية" : "Current Password",
+    newPassword: isRtl ? "كلمة المرور الجديدة" : "New Password",
+    confirmPassword: isRtl ? "تأكيد كلمة المرور" : "Confirm Password",
+    updatePassword: isRtl ? "تحديث كلمة المرور" : "Update Password",
+    noAddresses: isRtl ? "لم تضف أي عناوين بعد" : "No addresses added yet",
+    addAddress: isRtl ? "إضافة عنوان" : "Add Address",
+    newAddress: isRtl ? "عنوان جديد" : "New Address",
+    cancel: isRtl ? "إلغاء" : "Cancel",
+    save: isRtl ? "حفظ" : "Save",
+
+    // Profile success/error messages
+    profileUpdated: isRtl ? "تم تحديث الملف الشخصي بنجاح" : "Profile updated successfully",
+    passwordMismatch: isRtl ? "كلمتا المرور غير متطابقتين" : "Passwords do not match",
+    passwordUpdated: isRtl ? "تم تحديث كلمة المرور بنجاح" : "Password updated successfully",
+    addressAdded: isRtl ? "تم إضافة العنوان بنجاح" : "Address added successfully",
+    addressRemoved: isRtl ? "تم حذف العنوان" : "Address removed",
+
+    // Coupon
+    haveCoupon: isRtl ? "هل لديك كوبون خصم؟" : "Have a coupon code?",
+    enterCouponCode: isRtl ? "أدخل كود الخصم" : "Enter coupon code",
+    apply: isRtl ? "تطبيق" : "Apply",
+    couponApplied: isRtl ? "تم تطبيق الكوبون" : "Coupon applied",
+    couponDiscount: isRtl ? "خصم الكوبون" : "Coupon discount",
+
+    // Free shipping
+    free: isRtl ? "مجاني" : "Free",
+    freeShippingUnlocked: isRtl ? "تهانينا! حصلت على شحن مجاني" : "Congrats! You unlocked free shipping",
+    freeShippingProgress: isRtl ? "أضف {amount} للحصول على شحن مجاني" : "Add {amount} more for free shipping",
+
+    // Misc
+    priceRange: isRtl ? "نطاق السعر" : "Price Range",
+    minPrice: isRtl ? "أدنى سعر" : "Min Price",
+    maxPrice: isRtl ? "أعلى سعر" : "Max Price",
   };
 
   return (

@@ -23,13 +23,13 @@ const ShopContextProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [orders, setOrders] = useState([]);
+  const [wishlist, setWishlist] = useState([]);
+  const [coupon, setCoupon] = useState(null);
   const navigate = useNavigate();
 
-  // Auth state
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(() => localStorage.getItem("token") || "");
 
-  // Get user ID from token
   const getUserId = () => {
     if (!token) return null;
     try {
@@ -40,16 +40,12 @@ const ShopContextProvider = ({ children }) => {
     }
   };
 
-  // Sync cart to backend
   const syncCartToBackend = async (cart) => {
     if (!token) return;
     try {
       await fetch(`${API_URL}/api/user/updatecart`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ userId: getUserId(), cartData: cart }),
       });
     } catch (error) {
@@ -57,23 +53,18 @@ const ShopContextProvider = ({ children }) => {
     }
   };
 
-  // Load cart from backend
   const loadCart = async () => {
     if (!token) return;
     try {
       const response = await fetch(`${API_URL}/api/user/getcart`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ userId: getUserId() }),
       });
       const data = await response.json();
       if (data.success && data.cartData) {
-        // Ensure cartData is always an array
-        const cartArray = Array.isArray(data.cartData) 
-          ? data.cartData 
+        const cartArray = Array.isArray(data.cartData)
+          ? data.cartData
           : Object.values(data.cartData || {});
         setCartProducts(cartArray);
       }
@@ -82,22 +73,51 @@ const ShopContextProvider = ({ children }) => {
     }
   };
 
-  // Load user profile on app load
   const loadUserProfile = async () => {
     if (!token) return;
     try {
       const response = await fetch(`${API_URL}/api/user/profile`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
       const data = await response.json();
-      if (data.success && data.user) {
-        setUser(data.user);
-      }
+      if (data.success && data.user) setUser(data.user);
     } catch (error) {
       console.error("Failed to load user profile:", error);
+    }
+  };
+
+  const loadWishlist = async () => {
+    if (!token) return;
+    try {
+      const res = await fetch(`${API_URL}/api/wishlist`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      if (data.success) setWishlist(data.productIds || []);
+    } catch (e) {
+      console.error("Failed to load wishlist:", e);
+    }
+  };
+
+  const toggleWishlist = async (productId) => {
+    if (!token) {
+      toast.error("Please login to save items");
+      navigate("/login");
+      return;
+    }
+    try {
+      const res = await fetch(`${API_URL}/api/wishlist/toggle`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ productId }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setWishlist(data.productIds || []);
+        toast.success(data.added ? "Added to wishlist ❤️" : "Removed from wishlist");
+      }
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -105,8 +125,10 @@ const ShopContextProvider = ({ children }) => {
     if (token) {
       localStorage.setItem("token", token);
       loadUserProfile();
+      loadWishlist();
     } else {
       localStorage.removeItem("token");
+      setWishlist([]);
     }
   }, [token]);
 
@@ -114,11 +136,8 @@ const ShopContextProvider = ({ children }) => {
     localStorage.setItem("cartProducts", JSON.stringify(cartProducts));
   }, [cartProducts]);
 
-  // Load cart after products are loaded on initial page load
   useEffect(() => {
-    if (token && products.length > 0) {
-      loadCart();
-    }
+    if (token && products.length > 0) loadCart();
   }, [token, products]);
 
   const login = async (email, password) => {
@@ -173,6 +192,8 @@ const ShopContextProvider = ({ children }) => {
     setUser(null);
     setCartProducts([]);
     setOrders([]);
+    setWishlist([]);
+    setCoupon(null);
     localStorage.removeItem("token");
     navigate("/");
     toast.success("Logged out successfully");
@@ -182,9 +203,7 @@ const ShopContextProvider = ({ children }) => {
     try {
       const response = await fetch(`${API_URL}/api/product/list`);
       const data = await response.json();
-      if (data.success) {
-        setProducts(data.products || []);
-      }
+      if (data.success) setProducts(data.products || []);
     } catch (error) {
       console.error("Failed to fetch products:", error);
     } finally {
@@ -196,15 +215,10 @@ const ShopContextProvider = ({ children }) => {
     fetchProducts();
     getUserOrders();
 
-    const productInterval = setInterval(() => {
-      fetchProducts();
-    }, 10000);
-
+    const productInterval = setInterval(fetchProducts, 30000);
     const ordersInterval = setInterval(() => {
-      if (token) {
-        getUserOrders();
-      }
-    }, 10000);
+      if (token) getUserOrders();
+    }, 30000);
 
     return () => {
       clearInterval(productInterval);
@@ -224,72 +238,51 @@ const ShopContextProvider = ({ children }) => {
       toast.error("Please login to add items to cart");
       return;
     }
-
     if (!size) {
       toast.error("Please select a size");
       return;
     }
-
     setCartProducts((prev) => {
       const cart = Array.isArray(prev) ? prev : [];
-      
-      const existingItem = cart.find(
-        (item) => item?.productId === productId && item?.size === size,
-      );
-
+      const existingItem = cart.find((item) => item?.productId === productId && item?.size === size);
       let newCart;
       if (existingItem) {
         newCart = cart.map((item) =>
           item?.productId === productId && item?.size === size
             ? { ...item, quantity: (item?.quantity || 0) + 1 }
-            : item,
+            : item
         );
       } else {
         newCart = [...cart, { productId, size, quantity: 1 }];
       }
-      
-      if (token) {
-        syncCartToBackend(newCart);
-      }
-      
+      if (token) syncCartToBackend(newCart);
       toast.success("Added to cart!");
       return newCart;
     });
   };
 
   const removeFromCart = (productId, size) => {
-    const newCart = cartProducts.filter(
-      (item) => item.productId !== productId || item.size !== size,
-    );
+    const newCart = cartProducts.filter((item) => item.productId !== productId || item.size !== size);
     setCartProducts(newCart);
-    if (token) {
-      syncCartToBackend(newCart);
-    }
+    if (token) syncCartToBackend(newCart);
   };
-  // if user make any change to the quantity :
-  // first , the min number is 1
-  // second : i will change the product quantity in the cart .
+
   const updateQuantity = (productId, size, quantity) => {
     if (quantity < 1) return;
     const newCart = cartProducts.map((item) =>
-      item.productId === productId && item.size === size
-        ? { ...item, quantity }
-        : item,
+      item.productId === productId && item.size === size ? { ...item, quantity } : item
     );
     setCartProducts(newCart);
-    if (token) {
-      syncCartToBackend(newCart);
-    }
+    if (token) syncCartToBackend(newCart);
   };
 
-  // Order functions
   const placeOrder = async (address, paymentMethod) => {
     if (!token) {
       toast.error("Please login to place an order");
       return { success: false };
     }
     try {
-      const itemsWithDetails = cartProducts.map(item => {
+      const itemsWithDetails = cartProducts.map((item) => {
         const product = productMap[item.productId];
         return {
           productId: item.productId,
@@ -300,24 +293,30 @@ const ShopContextProvider = ({ children }) => {
         };
       });
 
+      const discount = coupon ? coupon.discount : 0;
+      const FREE_SHIPPING_THRESHOLD = 500;
+      const freeShipping = cartTotal >= FREE_SHIPPING_THRESHOLD;
+      const shippingCost = freeShipping ? 0 : delivery_fee;
+      const totalAmount = cartTotal + shippingCost - discount;
+
       const response = await fetch(`${API_URL}/api/order/place`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({
           userId: getUserId(),
           items: itemsWithDetails,
-          amount: cartTotal + delivery_fee,
+          amount: Math.max(0, totalAmount),
           address,
           paymentMethod,
+          couponCode: coupon?.code,
+          discount,
         }),
       });
       const data = await response.json();
       if (data.success) {
         setCartProducts([]);
         syncCartToBackend([]);
+        setCoupon(null);
         getUserOrders();
         toast.success("Order placed successfully!");
         return { success: true, orderId: data.orderId };
@@ -336,20 +335,16 @@ const ShopContextProvider = ({ children }) => {
     try {
       const response = await fetch(`${API_URL}/api/order/userorders`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ userId: getUserId() }),
       });
       const data = await response.json();
-      if (data.success) {
-        setOrders(data.orders);
-      }
+      if (data.success) setOrders(data.orders);
     } catch (error) {
       console.error("Failed to fetch orders:", error);
     }
   };
+
   const CartCount = useMemo(() => {
     if (!Array.isArray(cartProducts)) return 0;
     return cartProducts.reduce((total, item) => total + (item?.quantity || 0), 0);
@@ -381,6 +376,7 @@ const ShopContextProvider = ({ children }) => {
     navigate,
     API_URL,
     user,
+    setUser,
     token,
     login,
     register,
@@ -389,6 +385,10 @@ const ShopContextProvider = ({ children }) => {
     placeOrder,
     getUserOrders,
     getUserId,
+    wishlist,
+    toggleWishlist,
+    coupon,
+    setCoupon,
   };
 
   return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>;
