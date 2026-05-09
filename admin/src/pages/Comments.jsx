@@ -7,7 +7,6 @@ import { backendUrl } from "../App";
 const Comments = ({ token }) => {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [products, setProducts] = useState([]);
 
   const loadComments = async () => {
     setLoading(true);
@@ -20,8 +19,6 @@ const Comments = ({ token }) => {
         // Get all products to match product names
         const productsRes = await axios.get(backendUrl + "/api/product/list");
         const productsData = productsRes.data.products || [];
-        setProducts(productsData);
-        
         // Map comments with product names
         const commentsWithProducts = commentsData.map(comment => {
           const product = productsData.find(p => p._id === comment.productId);
