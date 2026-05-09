@@ -6,7 +6,7 @@ export default defineConfig({
     plugins: [react()],
     base: "/admin/",
     build: {
-        outDir: "dist/admin"
+        assetsDir: "admin/assets"
     },
     server: { port: 5174 },
 });
