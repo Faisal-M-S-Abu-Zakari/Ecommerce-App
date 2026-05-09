@@ -5,8 +5,5 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
     plugins: [react()],
     base: "/admin/",
-    build: {
-        assetsDir: "admin/assets"
-    },
     server: { port: 5174 },
 });
